@@ -142,6 +142,7 @@
     <ClCompile Include="Exemple.cpp" />
     <ClCompile Include="3Nodes\NodeMap.cpp" />
     <ClCompile Include="4json\Manzana.cpp" />
+    <ClCompile Include="Map.cpp" />
     <ClCompile Include="Utils\ConsoleControl.cpp" />
     <ClCompile Include="3Nodes\Vector2.cpp" />
   </ItemGroup>
@@ -157,6 +158,7 @@
     <ClInclude Include="4json\ICodable.h" />
     <ClInclude Include="4json\Fruta.h" />
     <ClInclude Include="4json\Manzana.h" />
+    <ClInclude Include="Map.h" />
     <ClInclude Include="Utils\ConsoleControl.h" />
     <ClInclude Include="Utils\InputsConsts.h" />
     <ClInclude Include="3Nodes\Vector2.h" />

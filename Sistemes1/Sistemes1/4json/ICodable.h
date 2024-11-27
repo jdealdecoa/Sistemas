@@ -40,7 +40,7 @@ public:
 	template<typename T, typename = typename std::enable_if<std::is_base_of<ICodable, T>::value>::type>
 	static T* FromJson(Json::Value json) 
 	{
-		std::string className = json[GetDecodeKey()].asSting();
+		std::string className = json[GetDecodeKey()].asString();
 		
 		SubclassDecode decodeProcess = (*GetDecodeMap())[className];
 
