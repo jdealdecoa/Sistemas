@@ -4,6 +4,8 @@
 #include "3Nodes/NodeMap.h"
 #include "Utils/ConsoleControl.h"
 #include "3Nodes/Vector2.h"
+#include "Wall.h"
+#include "Portal.h"
 
 Map::Map() : _nodeMap(nullptr) {}
 
@@ -26,11 +28,10 @@ void Map::Initialize(Vector2 size, Vector2 offset) {
             _nodeMap->SafePickNode(position, [&](Node* node) {
                 if (x == 0 || x == size.X - 1 || y == 0 || y == size.Y - 1) {
                     // Paredes en los bordes
-                    //node->SetContent(new Wall()); // `Wall` sería una clase que implementa `INodeContent`
+                    node->SetContent(new Wall()); // `Wall` sería una clase que implementa `INodeContent`
                 }
-                else if ((x == size.X / 2 && y == 0) || (x == size.X / 2 && y == size.Y - 1)) {
-                    // Portales en la mitad superior e inferior
-                    //node->SetContent(new Portal()); // `Portal` implementa `INodeContent`
+                if ((x == size.X / 2 && y == 0) || (x == size.X / 2 && y == size.Y - 1)) {
+                    node->SetContent(new Portal()); // `Portal` implementa `INodeContent`
                 }
                 });
         }
@@ -58,7 +59,7 @@ void Map::Draw(NodeMap* nodeMap, const Vector2& playerPosition, const std::list<
                     node->GetContent()->Draw(Vector2(0, 0));
                 }
                 else {
-                    std::cout << ".";
+                    std::cout << " ";
                 }
                 CC::Unlock();
                 });

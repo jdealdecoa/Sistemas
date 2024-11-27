@@ -1,5 +1,14 @@
 #include "Node.h"
 #include "../Utils/ConsoleControl.h"
+void Node::SetContent(INodeContent* newContent)
+{
+	if (_content != newContent) {
+		if (_content != nullptr) {
+			delete _content; 
+		}
+		_content = newContent; 
+	}
+}
 void Node::DrawContent(Vector2 offset)
 {
 	if (_content == nullptr) {

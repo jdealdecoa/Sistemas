@@ -1,2 +1,3 @@
-﻿  NodeMap.cpp
+﻿  Map.cpp
+C:\Users\34648\Desktop\Visual 2 CDI\Practica 1 sistemas\Sistemas\Sistemes1\Sistemes1\Utils\ConsoleControl.h(43,2): warning C4091: 'static ': se ha omitido a la izquierda de 'ConsoleControl' cuando no hay ninguna variable declarada
   Sistemes1.vcxproj -> C:\Users\34648\Desktop\Visual 2 CDI\Practica 1 sistemas\Sistemas\Sistemes1\x64\Debug\Sistemes1.exe

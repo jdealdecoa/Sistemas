@@ -159,9 +159,11 @@
     <ClInclude Include="4json\Fruta.h" />
     <ClInclude Include="4json\Manzana.h" />
     <ClInclude Include="Map.h" />
+    <ClInclude Include="Portal.h" />
     <ClInclude Include="Utils\ConsoleControl.h" />
     <ClInclude Include="Utils\InputsConsts.h" />
     <ClInclude Include="3Nodes\Vector2.h" />
+    <ClInclude Include="Wall.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
