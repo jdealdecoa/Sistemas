@@ -159,6 +159,7 @@
     <ClInclude Include="4json\Fruta.h" />
     <ClInclude Include="4json\Manzana.h" />
     <ClInclude Include="Map.h" />
+    <ClInclude Include="MoveCoolDown.h" />
     <ClInclude Include="Portal.h" />
     <ClInclude Include="Utils\ConsoleControl.h" />
     <ClInclude Include="Utils\InputsConsts.h" />

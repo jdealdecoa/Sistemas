@@ -2,54 +2,115 @@
 #include <fstream>
 #include <iostream>
 
-#include "4json/Bannana.h"
-#include "4json/Manzana.h"
-
 //#include "tutorialThreads.h"
 #include <iostream>
 #include "2inputSystem/InputSystem.h"
 #include "Utils/ConsoleControl.h"
 
 #include "Map.h"
+#include "MoveCoolDown.h"
+
+
+// Variables globales
+bool running = true; 
+std::mutex runningMutex; 
  
+
+void PlayerInputThread(Vector2& playerPosition, Map& gameMap) {
+    MoveCooldown moveCooldown(500); 
+
+    InputSystem inputSystem;
+
+    inputSystem.AddListener(K_W, [&]() {
+        if (moveCooldown.TryMove()) { 
+            Vector2 newPosition = playerPosition;
+            newPosition.Y -= 1;
+            if (gameMap.IsValidMove(newPosition)) {
+                playerPosition = newPosition;
+            }
+        }
+        });
+
+    inputSystem.AddListener(K_S, [&]() {
+        if (moveCooldown.TryMove()) {
+            Vector2 newPosition = playerPosition;
+            newPosition.Y += 1;
+            if (gameMap.IsValidMove(newPosition)) {
+                playerPosition = newPosition;
+            }
+        }
+        });
+
+    inputSystem.AddListener(K_A, [&]() {
+        if (moveCooldown.TryMove()) {
+            Vector2 newPosition = playerPosition;
+            newPosition.X -= 1;
+            if (gameMap.IsValidMove(newPosition)) {
+                playerPosition = newPosition;
+            }
+        }
+        });
+
+    inputSystem.AddListener(K_D, [&]() {
+        if (moveCooldown.TryMove()) {
+            Vector2 newPosition = playerPosition;
+            newPosition.X += 1;
+            if (gameMap.IsValidMove(newPosition)) {
+                playerPosition = newPosition;
+            }
+        }
+        });
+
+    inputSystem.AddListener(K_ESCAPE, [&]() {
+        runningMutex.lock();
+        running = false;
+        runningMutex.unlock();
+        });
+
+    inputSystem.StartListen();
+
+    while (true) {
+        runningMutex.lock();
+        if (!running) {
+            runningMutex.unlock();
+            break;
+        }
+        runningMutex.unlock();
+        gameMap.Draw(gameMap.GetNodeMap(), playerPosition, {});
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    }
+
+    inputSystem.StopListen();
+}
 
 int main() {
 	
-		// Crear e inicializar el mapa
-		Map gameMap;
-		Vector2 mapSize(20, 10); // 20 columnas por 10 filas
-		Vector2 offset(0, 0);    // Sin desplazamiento inicial
-		gameMap.Initialize(mapSize, offset);
+    Map gameMap;
+    Vector2 mapSize(20, 10);
+    Vector2 offset(0, 0);
+    gameMap.Initialize(mapSize, offset);
 
-		// Posición del jugador
-		Vector2 playerPosition(10, 5);
+    Vector2 playerPosition(1, 1);
 
-		// Posiciones de enemigos
-		std::list<Vector2> enemyPositions = {
-			Vector2(8, 4),
-			Vector2(12, 6)
-		};
+    std::thread inputThread(PlayerInputThread, std::ref(playerPosition), std::ref(gameMap));
 
-		// Dibujar el mapa
-		gameMap.Draw(gameMap.GetNodeMap(), playerPosition, enemyPositions);
+    while (true) {
+        runningMutex.lock();
+        if (!running) {
+            runningMutex.unlock();
+            break;
+        }
+        runningMutex.unlock();
+
+        std::this_thread::sleep_for(std::chrono::milliseconds(200));
+    }
+
+    inputThread.join();
 
 
 
 
-	//ThreadTutorialTest();
-	InputSystem* is = new InputSystem();
-
-	InputSystem::KeyBinding* kb1 = is->AddListener(K_1, [](){
-		CC::Lock();
-		std::cout << "Pressed 1" << std::endl;
-		CC::Unlock();
-	});
-
-	is->AddListener(K_0, [is, kb1]() {
-		is->RemoveAndDeleteListener(kb1);
-	});
-
-	is->StartListen();
+	
 	while (true) {
 
 	}

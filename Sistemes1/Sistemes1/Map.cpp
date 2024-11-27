@@ -67,6 +67,24 @@ void Map::Draw(NodeMap* nodeMap, const Vector2& playerPosition, const std::list<
     }
 }
 
+bool Map::IsValidMove(const Vector2& position)
+{
+    if (position.X < 0 || position.X >= _nodeMap->GetSize().X ||
+        position.Y < 0 || position.Y >= _nodeMap->GetSize().Y) {
+        return false; // Fuera de los límites
+    }
+
+    Node* node = nullptr;
+    _nodeMap->SafePickNode(position, [&](Node* n) { node = n; });
+
+    if (node && node->GetContent() != nullptr) {
+        // Si el contenido es una pared, no se puede mover
+        return dynamic_cast<Wall*>(node->GetContent()) == nullptr;
+    }
+
+    return true;
+}
+
 NodeMap* Map::GetNodeMap()
 {
     return _nodeMap;
