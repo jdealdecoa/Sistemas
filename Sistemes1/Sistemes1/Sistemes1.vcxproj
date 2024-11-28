@@ -139,7 +139,8 @@
     <ClCompile Include="3Nodes\Node.cpp" />
     <ClCompile Include="Exemple.cpp" />
     <ClCompile Include="3Nodes\NodeMap.cpp" />
-    <ClCompile Include="Map.cpp" />
+    <ClCompile Include="Mapa.cpp" />
+    <ClCompile Include="Player.cpp" />
     <ClCompile Include="Utils\ConsoleControl.cpp" />
     <ClCompile Include="3Nodes\Vector2.cpp" />
     <ClCompile Include="World.cpp" />
@@ -153,8 +154,9 @@
     <ClInclude Include="dist\json\json-forwards.h" />
     <ClInclude Include="dist\json\json.h" />
     <ClInclude Include="4json\ICodable.h" />
-    <ClInclude Include="Map.h" />
+    <ClInclude Include="Mapa.h" />
     <ClInclude Include="MoveCoolDown.h" />
+    <ClInclude Include="Player.h" />
     <ClInclude Include="Portal.h" />
     <ClInclude Include="Utils\ConsoleControl.h" />
     <ClInclude Include="Utils\InputsConsts.h" />

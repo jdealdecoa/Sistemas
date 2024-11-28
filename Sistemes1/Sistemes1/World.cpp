@@ -1,20 +1,36 @@
 #include "World.h"
 #include <iostream>
 
+Player* World::GetPlayer()
+{
+    return player;
+}
+
+void World::SetCurrentMap(Vector2 delta)
+{
+    currentMap = worldMap[delta.X][delta.Y];
+}
+
 World::World(Vector2 worldSize, Vector2 mapSize) : currentMapPosition(0, 0) {
+
+    player = new Player(Vector2(mapSize.X / 2, mapSize.Y / 2));
+
     // Crear un mapamundi de tamaño `worldSize.X` x `worldSize.Y`
     for (int x = 0; x < worldSize.X; ++x) {
-        std::vector<Map> row;
+        std::vector<Mapa> row;
         for (int y = 0; y < worldSize.Y; ++y) {
-            Map map;
-            map.Initialize(mapSize, Vector2(0, 0)); // Inicializar cada mapa
+            Mapa map;
+            map.Initialize(mapSize , player, Vector2(10, 5), Vector2(x,y), worldSize); // Inicializar cada mapa
             row.push_back(map);
         }
         worldMap.push_back(row);
     }
+    SetCurrentMap(Vector2(worldSize.X/2, worldSize.Y/2));
 }
-Map& World::GetCurrentMap() {
-    return worldMap[currentMapPosition.X][currentMapPosition.Y];
+
+
+Mapa& World::GetCurrentMap() {
+    return currentMap;
 }
 
 bool World::MoveToMap(Vector2 delta) {
