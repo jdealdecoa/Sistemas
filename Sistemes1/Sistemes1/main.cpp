@@ -9,6 +9,7 @@
 
 #include "Map.h"
 #include "MoveCoolDown.h"
+#include "World.h"
 
 
 // Variables globales
@@ -16,17 +17,22 @@ bool running = true;
 std::mutex runningMutex; 
  
 
-void PlayerInputThread(Vector2& playerPosition, Map& gameMap) {
-    MoveCooldown moveCooldown(500); 
-
+void PlayerInputThread(Vector2& playerPosition, World& world, bool& running, std::mutex& runningMutex) {
+    MoveCooldown moveCooldown(500); // Cooldown de 500 ms
     InputSystem inputSystem;
 
     inputSystem.AddListener(K_W, [&]() {
-        if (moveCooldown.TryMove()) { 
+        if (moveCooldown.TryMove()) {
             Vector2 newPosition = playerPosition;
             newPosition.Y -= 1;
-            if (gameMap.IsValidMove(newPosition)) {
+            if (world.GetCurrentMap().IsValidMove(newPosition)) {
                 playerPosition = newPosition;
+            }
+            else if (newPosition.Y < 0) {
+                // Moverse al mapa superior
+                if (world.MoveToMap(Vector2(0, -1))) {
+                    playerPosition.Y = world.GetCurrentMap().GetNodeMap()->GetSize().Y - 1;
+                }
             }
         }
         });
@@ -35,8 +41,14 @@ void PlayerInputThread(Vector2& playerPosition, Map& gameMap) {
         if (moveCooldown.TryMove()) {
             Vector2 newPosition = playerPosition;
             newPosition.Y += 1;
-            if (gameMap.IsValidMove(newPosition)) {
+            if (world.GetCurrentMap().IsValidMove(newPosition)) {
                 playerPosition = newPosition;
+            }
+            else if (newPosition.Y >= world.GetCurrentMap().GetNodeMap()->GetSize().Y) {
+                // Moverse al mapa inferior
+                if (world.MoveToMap(Vector2(0, 1))) {
+                    playerPosition.Y = 0;
+                }
             }
         }
         });
@@ -45,8 +57,14 @@ void PlayerInputThread(Vector2& playerPosition, Map& gameMap) {
         if (moveCooldown.TryMove()) {
             Vector2 newPosition = playerPosition;
             newPosition.X -= 1;
-            if (gameMap.IsValidMove(newPosition)) {
+            if (world.GetCurrentMap().IsValidMove(newPosition)) {
                 playerPosition = newPosition;
+            }
+            else if (newPosition.X < 0) {
+                // Moverse al mapa izquierdo
+                if (world.MoveToMap(Vector2(-1, 0))) {
+                    playerPosition.X = world.GetCurrentMap().GetNodeMap()->GetSize().X - 1;
+                }
             }
         }
         });
@@ -55,15 +73,21 @@ void PlayerInputThread(Vector2& playerPosition, Map& gameMap) {
         if (moveCooldown.TryMove()) {
             Vector2 newPosition = playerPosition;
             newPosition.X += 1;
-            if (gameMap.IsValidMove(newPosition)) {
+            if (world.GetCurrentMap().IsValidMove(newPosition)) {
                 playerPosition = newPosition;
+            }
+            else if (newPosition.X >= world.GetCurrentMap().GetNodeMap()->GetSize().X) {
+                // Moverse al mapa derecho
+                if (world.MoveToMap(Vector2(1, 0))) {
+                    playerPosition.X = 0;
+                }
             }
         }
         });
 
     inputSystem.AddListener(K_ESCAPE, [&]() {
         runningMutex.lock();
-        running = false;
+        running = false; // Detener el programa
         runningMutex.unlock();
         });
 
@@ -73,10 +97,11 @@ void PlayerInputThread(Vector2& playerPosition, Map& gameMap) {
         runningMutex.lock();
         if (!running) {
             runningMutex.unlock();
-            break;
+            break; // Salir si se detiene el programa
         }
         runningMutex.unlock();
-        gameMap.Draw(gameMap.GetNodeMap(), playerPosition, {});
+
+        world.GetCurrentMap().Draw(world.GetCurrentMap().GetNodeMap(), playerPosition, {});
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
     }
 
@@ -85,24 +110,22 @@ void PlayerInputThread(Vector2& playerPosition, Map& gameMap) {
 
 int main() {
 	
-    Map gameMap;
-    Vector2 mapSize(20, 10);
-    Vector2 offset(0, 0);
-    gameMap.Initialize(mapSize, offset);
+    World world(Vector2(3, 3), Vector2(3, 3)); // Mapamundi 3x3 con mapas 20x10
+    Vector2 playerPosition(1, 1); // Posición inicial del jugador
+    bool running = true; // Control del bucle principal
+    std::mutex runningMutex; // Mutex para sincronizar el acceso a `running`
 
-    Vector2 playerPosition(1, 1);
-
-    std::thread inputThread(PlayerInputThread, std::ref(playerPosition), std::ref(gameMap));
+    std::thread inputThread(PlayerInputThread, std::ref(playerPosition), std::ref(world), std::ref(running), std::ref(runningMutex));
 
     while (true) {
         runningMutex.lock();
         if (!running) {
             runningMutex.unlock();
-            break;
+            break; // Salir si se detiene el programa
         }
         runningMutex.unlock();
 
-        std::this_thread::sleep_for(std::chrono::milliseconds(200));
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
     }
 
     inputThread.join();

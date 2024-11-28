@@ -133,18 +133,16 @@
   <ItemGroup>
     <ClCompile Include="2inputSystem\InputSystem.cpp" />
     <ClCompile Include="3Nodes\INodeContent.cpp" />
-    <ClCompile Include="4json\Bannana.cpp" />
     <ClCompile Include="dist\jsoncpp.cpp" />
     <ClCompile Include="4json\ICodable.cpp" />
-    <ClCompile Include="4json\Fruta.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="3Nodes\Node.cpp" />
     <ClCompile Include="Exemple.cpp" />
     <ClCompile Include="3Nodes\NodeMap.cpp" />
-    <ClCompile Include="4json\Manzana.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="Utils\ConsoleControl.cpp" />
     <ClCompile Include="3Nodes\Vector2.cpp" />
+    <ClCompile Include="World.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="2inputSystem\InputSystem.h" />
@@ -152,12 +150,9 @@
     <ClInclude Include="3Nodes\Node.h" />
     <ClInclude Include="3Nodes\NodeMap.h" />
     <ClInclude Include="3Nodes\INodeContent.h" />
-    <ClInclude Include="4json\Bannana.h" />
     <ClInclude Include="dist\json\json-forwards.h" />
     <ClInclude Include="dist\json\json.h" />
     <ClInclude Include="4json\ICodable.h" />
-    <ClInclude Include="4json\Fruta.h" />
-    <ClInclude Include="4json\Manzana.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="MoveCoolDown.h" />
     <ClInclude Include="Portal.h" />
@@ -165,6 +160,7 @@
     <ClInclude Include="Utils\InputsConsts.h" />
     <ClInclude Include="3Nodes\Vector2.h" />
     <ClInclude Include="Wall.h" />
+    <ClInclude Include="World.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

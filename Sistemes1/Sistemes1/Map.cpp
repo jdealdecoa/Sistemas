@@ -17,21 +17,21 @@ Map::~Map() {
 
 void Map::Initialize(Vector2 size, Vector2 offset) {
     if (_nodeMap != nullptr) {
-        delete _nodeMap; // Limpiar cualquier mapa previo
+        delete _nodeMap;
     }
     _nodeMap = new NodeMap(size, offset);
 
-    // Inicializar nodos con contenido (opcional: paredes, portales, etc.)
+    //Inicializar nodos con contenido
     for (int x = 0; x < size.X; ++x) {
         for (int y = 0; y < size.Y; ++y) {
             Vector2 position(x, y);
             _nodeMap->SafePickNode(position, [&](Node* node) {
                 if (x == 0 || x == size.X - 1 || y == 0 || y == size.Y - 1) {
-                    // Paredes en los bordes
-                    node->SetContent(new Wall()); // `Wall` sería una clase que implementa `INodeContent`
+                    
+                    node->SetContent(new Wall());
                 }
                 if ((x == size.X / 2 && y == 0) || (x == size.X / 2 && y == size.Y - 1)) {
-                    node->SetContent(new Portal()); // `Portal` implementa `INodeContent`
+                    node->SetContent(new Portal());
                 }
                 });
         }
@@ -50,10 +50,10 @@ void Map::Draw(NodeMap* nodeMap, const Vector2& playerPosition, const std::list<
                 CC::SetPosition(x, y);
 
                 if (playerPosition.X == x && playerPosition.Y == y) {
-                    std::cout << "P"; // Representación del jugador
+                    std::cout << "P"; 
                 }
                 else if (std::find(enemyPositions.begin(), enemyPositions.end(), position) != enemyPositions.end()) {
-                    std::cout << "E"; // Representación de enemigos
+                    std::cout << "E";
                 }
                 else if (node->GetContent() != nullptr) {
                     node->GetContent()->Draw(Vector2(0, 0));
@@ -71,14 +71,13 @@ bool Map::IsValidMove(const Vector2& position)
 {
     if (position.X < 0 || position.X >= _nodeMap->GetSize().X ||
         position.Y < 0 || position.Y >= _nodeMap->GetSize().Y) {
-        return false; // Fuera de los límites
+        return false; 
     }
 
     Node* node = nullptr;
     _nodeMap->SafePickNode(position, [&](Node* n) { node = n; });
 
     if (node && node->GetContent() != nullptr) {
-        // Si el contenido es una pared, no se puede mover
         return dynamic_cast<Wall*>(node->GetContent()) == nullptr;
     }
 
