@@ -13,11 +13,12 @@ public:
 
     ~Mapa();
 
-    void Initialize(Vector2 size, Player* player, Vector2 offset, Vector2 worldPos, Vector2 wSize);
-    void Draw(NodeMap* nodeMap, const std::list<Vector2>& enemyPositions);
+    void Initialize(Vector2 size, Vector2 offset, Vector2 worldPos, Vector2 wSize);
+    void Draw(NodeMap* nodeMap);
     bool IsValidMove(const Vector2& position);
 
     NodeMap* GetNodeMap();
+    Vector2 GetMapOffset();
 
 private:
     NodeMap* _nodeMap;

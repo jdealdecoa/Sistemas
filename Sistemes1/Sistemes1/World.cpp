@@ -20,12 +20,17 @@ World::World(Vector2 worldSize, Vector2 mapSize) : currentMapPosition(0, 0) {
         std::vector<Mapa> row;
         for (int y = 0; y < worldSize.Y; ++y) {
             Mapa map;
-            map.Initialize(mapSize , player, Vector2(10, 5), Vector2(x,y), worldSize); // Inicializar cada mapa
+            map.Initialize(mapSize, Vector2(10, 5), Vector2(x,y), worldSize); // Inicializar cada mapa
             row.push_back(map);
         }
         worldMap.push_back(row);
     }
-    SetCurrentMap(Vector2(worldSize.X/2, worldSize.Y/2));
+
+    SetCurrentMap(Vector2(worldSize.X / 2, worldSize.Y / 2));
+
+    worldMap[worldSize.X / 2][worldSize.Y / 2].GetNodeMap()->SafePickNode(Vector2(mapSize.X / 2, mapSize.Y / 2), [&](Node* node) {
+        node->SetContent(player);
+        });
 }
 
 
@@ -40,6 +45,7 @@ bool World::MoveToMap(Vector2 delta) {
     if (newMapPosition.X >= 0 && newMapPosition.X < worldMap.size() &&
         newMapPosition.Y >= 0 && newMapPosition.Y < worldMap[0].size()) {
         currentMapPosition = newMapPosition;
+
         return true;
     }
     return false;

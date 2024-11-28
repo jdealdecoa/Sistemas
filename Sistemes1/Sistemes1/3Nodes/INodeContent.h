@@ -7,7 +7,8 @@ enum class DisplayType
 	ENEMY,
 	WALL,
 	PORTAL,
-	CHEST
+	CHEST,
+	EMPTY
 };
 
 class INodeContent
@@ -31,6 +32,8 @@ public:
 			break;
 		case DisplayType::CHEST:
 			return "C";
+		case DisplayType::EMPTY:
+			return " ";
 			break;
 		default:
 			break;

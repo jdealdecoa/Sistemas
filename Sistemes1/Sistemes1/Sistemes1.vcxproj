@@ -154,6 +154,7 @@
     <ClInclude Include="dist\json\json-forwards.h" />
     <ClInclude Include="dist\json\json.h" />
     <ClInclude Include="4json\ICodable.h" />
+    <ClInclude Include="Empty.h" />
     <ClInclude Include="Mapa.h" />
     <ClInclude Include="MoveCoolDown.h" />
     <ClInclude Include="Player.h" />

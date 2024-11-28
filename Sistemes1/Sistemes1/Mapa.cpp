@@ -6,6 +6,7 @@
 #include "3Nodes/Vector2.h"
 #include "Wall.h"
 #include "Portal.h"
+#include "Empty.h"
 
 Mapa::Mapa() : _nodeMap(nullptr) {}
 
@@ -13,13 +14,11 @@ Mapa::~Mapa() {
 
 }
 
-void Mapa::Initialize(Vector2 size, Player* player, Vector2 offset, Vector2 worldPos, Vector2 wSize) {
+void Mapa::Initialize(Vector2 size, Vector2 offset, Vector2 worldPos, Vector2 wSize) {
     this->worldPos = worldPos;
     this->worldSize = wSize;
     this->mapOffset = offset;
-    if (_nodeMap != nullptr) {
-        delete _nodeMap;
-    }
+
     _nodeMap = new NodeMap(size, offset);
 
     //Inicializar nodos con contenido
@@ -37,9 +36,9 @@ void Mapa::Initialize(Vector2 size, Player* player, Vector2 offset, Vector2 worl
                     
                     node->SetContent(new Wall());
                 }
-                if (x == player->position.X && y == player->position.Y) 
+                else
                 {
-                    node->SetContent(player);
+                    node->SetContent(new Empty());
                 }
                 portalSetter.SetPortals(node, position, size);
                 });
@@ -48,7 +47,7 @@ void Mapa::Initialize(Vector2 size, Player* player, Vector2 offset, Vector2 worl
 
 }
 
-void Mapa::Draw(NodeMap* nodeMap, const std::list<Vector2>& enemyPositions) {
+void Mapa::Draw(NodeMap* nodeMap) {
     Vector2 mapSize = nodeMap->GetSize();
 
     for (int x = 0; x < mapSize.X; x++) {
@@ -59,14 +58,8 @@ void Mapa::Draw(NodeMap* nodeMap, const std::list<Vector2>& enemyPositions) {
                 CC::Lock();
                 CC::SetPosition(position.X + mapOffset.X, position.Y + mapOffset.Y);
 
-                if (std::find(enemyPositions.begin(), enemyPositions.end(), position) != enemyPositions.end()) {
-                    std::cout << "E";
-                }
-                else if (node->GetContent() != nullptr) {
+                if (node->GetContent() != nullptr) {
                     node->GetContent()->Draw(Vector2(0, 0));
-                }
-                else {
-                    std::cout << " ";
                 }
 
                 CC::Unlock();
@@ -99,4 +92,9 @@ bool Mapa::IsValidMove(const Vector2& position)
 NodeMap* Mapa::GetNodeMap()
 {
     return _nodeMap;
+}
+
+Vector2 Mapa::GetMapOffset()
+{
+    return mapOffset;
 }

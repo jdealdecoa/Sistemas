@@ -27,6 +27,7 @@ public:
 	int GetHealth();
 	int GetPotionAmount();
 
+
 	void Draw(Vector2 offset) override {
 		CC::SetColor(CC::WHITE, CC::BLACK);
 		std::cout << GetDisplayType(DisplayType::PLAYER);

@@ -13,6 +13,7 @@ private:
     Vector2 currentMapPosition; // Posición actual del mapa en el mapamundi
 
 public:
+
     Player* GetPlayer();
     void SetCurrentMap(Vector2 delta);
     World(Vector2 worldSize, Vector2 mapSize); // Constructor para crear un mapamundi
