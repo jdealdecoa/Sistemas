@@ -19,7 +19,7 @@ private:
 
 public:
 	Vector2 position;
-	Player(Vector2 p);
+	Player(Vector2 p, DisplayType type);
 
 
 	int GetLives();

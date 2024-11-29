@@ -12,7 +12,6 @@
 #include "MoveCoolDown.h"
 #include "World.h"
 #include "Empty.h"
-#include "Enemy.h"
 #include "Wall.h"
 #include "Portal.h"
 
@@ -24,22 +23,20 @@ std::mutex runningMutex;
 void PlayerInputThread(Player* player, World& world, bool& running, std::mutex& runningMutex) {
     MoveCooldown moveCooldown(500); // Cooldown de 500 ms
     InputSystem inputSystem;
+    Vector2 newPosition = player->position;
+
+    CC::Lock();
+    CC::SetPosition(player->position.X + world.GetCurrentMap().GetMapOffset().X, player->position.Y + world.GetCurrentMap().GetMapOffset().Y);
+    player->Draw(Vector2(0, 0));
+    CC::Unlock();
 
 
     inputSystem.AddListener(K_W, [&]() {
         if (moveCooldown.TryMove()) {
-            Vector2 newPosition = player->position;
             newPosition.Y -= 1;
-            if (world.GetCurrentMap().IsValidMove(newPosition)) {
-                world.GetCurrentMap().GetNodeMap()->SafePickNode(newPosition, [&](Node* node) {
-                    node->SetContent(player);
-                });
-
-                player->position = newPosition;
-            }
-            else if (newPosition.Y < 0) {
+            if (newPosition.Y < 0) {
                 if (world.MoveToMap(Vector2(0, -1))) {
-                    player->position.Y = world.GetCurrentMap().GetNodeMap()->GetSize().Y - 1;
+                    newPosition.Y = world.GetCurrentMap().GetNodeMap()->GetSize().Y - 1;
                     world.SetCurrentMap(Vector2(world.GetCurrentMap().worldPos.X, world.GetCurrentMap().worldPos.Y -1));
                 }
             }
@@ -48,18 +45,10 @@ void PlayerInputThread(Player* player, World& world, bool& running, std::mutex& 
 
     inputSystem.AddListener(K_S, [&]() {
         if (moveCooldown.TryMove()) {
-            Vector2 newPosition = player->position;
             newPosition.Y += 1;
-            if (world.GetCurrentMap().IsValidMove(newPosition)) {
-                world.GetCurrentMap().GetNodeMap()->SafePickNode(newPosition, [&](Node* node) {
-                    node->SetContent(player);
-                    });
-
-                player->position = newPosition;
-            }
-            else if (newPosition.Y >= world.GetCurrentMap().GetNodeMap()->GetSize().Y) {
+            if (newPosition.Y >= world.GetCurrentMap().GetNodeMap()->GetSize().Y) {
                 if (world.MoveToMap(Vector2(0, 1))) {
-                    player->position.Y = 0;
+                    newPosition.Y = 0;
                     world.SetCurrentMap(Vector2(world.GetCurrentMap().worldPos.X, world.GetCurrentMap().worldPos.Y + 1));
                 }
             }
@@ -68,18 +57,10 @@ void PlayerInputThread(Player* player, World& world, bool& running, std::mutex& 
 
     inputSystem.AddListener(K_A, [&]() {
         if (moveCooldown.TryMove()) {
-            Vector2 newPosition = player->position;
             newPosition.X -= 1;
-            if (world.GetCurrentMap().IsValidMove(newPosition)) {
-                world.GetCurrentMap().GetNodeMap()->SafePickNode(newPosition, [&](Node* node) {
-                    node->SetContent(player);
-                    });
-
-                player->position = newPosition;
-            }
-            else if (newPosition.X < 0) {
+            if (newPosition.X < 0) {
                 if (world.MoveToMap(Vector2(-1, 0))) {
-                    player->position.X = world.GetCurrentMap().GetNodeMap()->GetSize().X - 1;
+                    newPosition.X = world.GetCurrentMap().GetNodeMap()->GetSize().X - 1;
                     world.SetCurrentMap(Vector2(world.GetCurrentMap().worldPos.X - 1, world.GetCurrentMap().worldPos.Y));
                 }
             }
@@ -88,17 +69,10 @@ void PlayerInputThread(Player* player, World& world, bool& running, std::mutex& 
 
     inputSystem.AddListener(K_D, [&]() {
         if (moveCooldown.TryMove()) {
-            Vector2 newPosition = player->position;
             newPosition.X += 1;
-            if (world.GetCurrentMap().IsValidMove(newPosition)) {
-                world.GetCurrentMap().GetNodeMap()->SafePickNode(newPosition, [&](Node* node) {
-                    node->SetContent(player);
-                    });
-                player->position = newPosition;
-            }
-            else if (newPosition.X >= world.GetCurrentMap().GetNodeMap()->GetSize().X) {
+            if (newPosition.X >= world.GetCurrentMap().GetNodeMap()->GetSize().X) {
                 if (world.MoveToMap(Vector2(1, 0))) {
-                    player->position.X = 0;
+                    newPosition.X = 0;
                     world.SetCurrentMap(Vector2(world.GetCurrentMap().worldPos.X + 1, world.GetCurrentMap().worldPos.Y ));
                 }
             }
@@ -118,8 +92,29 @@ void PlayerInputThread(Player* player, World& world, bool& running, std::mutex& 
         CC::SetPosition(30, 1);
         std::cout << player->position.X << " : " << player->position.Y;
         CC::Unlock();
+        
+        if (player->position != newPosition)
+        {
+            if (world.GetCurrentMap().IsValidMove(newPosition)) {
 
-        world.GetCurrentMap().Draw(world.GetCurrentMap().GetNodeMap());
+                CC::Lock();
+                CC::SetPosition(newPosition.X + world.GetCurrentMap().GetMapOffset().X, newPosition.Y + world.GetCurrentMap().GetMapOffset().Y);
+                player->Draw(Vector2(0, 0));
+                CC::Unlock();
+
+                world.GetCurrentMap().GetNodeMap()->SafePickNode(player->position, [&](Node* node) {
+                    CC::Lock();
+                    CC::SetPosition(player->position.X + world.GetCurrentMap().GetMapOffset().X, player->position.Y + world.GetCurrentMap().GetMapOffset().Y);
+                    node->DrawContent(Vector2(0, 0));
+                    CC::Unlock();
+                });
+
+                player->position = newPosition;
+            }
+        }
+        
+
+        //world.GetCurrentMap().Draw(world.GetCurrentMap().GetNodeMap());
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
         runningMutex.lock();
         if (!running) {
@@ -133,30 +128,13 @@ void PlayerInputThread(Player* player, World& world, bool& running, std::mutex& 
 }
 
 int main() {
-	
-
-
-
-
     World world(Vector2(3, 3), Vector2(20, 10)); // Mapamundi 3x3 con mapas 20x10
     bool running = true; // Control del bucle principal
+    Mapa currentmap = world.GetCurrentMap();
+    world.GetCurrentMap().Draw(world.GetCurrentMap().GetNodeMap());
     std::mutex runningMutex; // Mutex para sincronizar el acceso a `running`
 
     std::thread inputThread(PlayerInputThread, world.GetPlayer(), std::ref(world), std::ref(running), std::ref(runningMutex));
-
-
-    std::vector<Enemy*> enemies;
-    enemies.push_back(new Enemy(Vector2(10, 10), 1000)); // Movimiento cada 1 segundo
-    enemies.push_back(new Enemy(Vector2(15, 8), 2000)); // Movimiento cada 2 segundos
-    enemies.push_back(new Enemy(Vector2(7, 4), 1500));  // Movimiento cada 1.5 segundos
-
-    // Configurar los enemigos en los nodos correspondientes
-    for (auto enemy : enemies) {
-        world.GetCurrentMap().GetNodeMap()->SafePickNode(enemy->GetPosition(), [&](Node* node) {
-            node->SetContent(enemy);
-            });
-    }
-
 
 
     while (true) {
@@ -167,18 +145,13 @@ int main() {
         }
         runningMutex.unlock();
 
-        std::list<Vector2> enemyPositions;
-        for (auto enemy : enemies) {
-            enemyPositions.push_back(enemy->GetPosition());
+        if (currentmap.worldPos.X != world.GetCurrentMap().worldPos.X || currentmap.worldPos.Y != world.GetCurrentMap().worldPos.Y)
+        {
+            world.GetCurrentMap().Draw(world.GetCurrentMap().GetNodeMap());
+            currentmap = world.GetCurrentMap();
         }
-        world.GetCurrentMap().Draw(world.GetCurrentMap().GetNodeMap());
-
 
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
-    }
-    for (auto enemy : enemies) {
-        enemy->Stop();
-        delete enemy;
     }
 
     inputThread.join();

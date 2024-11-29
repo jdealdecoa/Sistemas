@@ -1,14 +1,14 @@
-C:\Users\34648\Desktop\Visual 2 CDI\Practica 1 sistemas\Sistemas\Sistemes1\Sistemes1\2inputSystem\InputSystem.cpp;C:\Users\34648\Desktop\Visual 2 CDI\Practica 1 sistemas\Sistemas\Sistemes1\Sistemes1\x64\Debug\InputSystem.obj
-C:\Users\34648\Desktop\Visual 2 CDI\Practica 1 sistemas\Sistemas\Sistemes1\Sistemes1\3Nodes\INodeContent.cpp;C:\Users\34648\Desktop\Visual 2 CDI\Practica 1 sistemas\Sistemas\Sistemes1\Sistemes1\x64\Debug\INodeContent.obj
-C:\Users\34648\Desktop\Visual 2 CDI\Practica 1 sistemas\Sistemas\Sistemes1\Sistemes1\dist\jsoncpp.cpp;C:\Users\34648\Desktop\Visual 2 CDI\Practica 1 sistemas\Sistemas\Sistemes1\Sistemes1\x64\Debug\jsoncpp.obj
-C:\Users\34648\Desktop\Visual 2 CDI\Practica 1 sistemas\Sistemas\Sistemes1\Sistemes1\4json\ICodable.cpp;C:\Users\34648\Desktop\Visual 2 CDI\Practica 1 sistemas\Sistemas\Sistemes1\Sistemes1\x64\Debug\ICodable.obj
-C:\Users\34648\Desktop\Visual 2 CDI\Practica 1 sistemas\Sistemas\Sistemes1\Sistemes1\Enemy.cpp;C:\Users\34648\Desktop\Visual 2 CDI\Practica 1 sistemas\Sistemas\Sistemes1\Sistemes1\x64\Debug\Enemy.obj
-C:\Users\34648\Desktop\Visual 2 CDI\Practica 1 sistemas\Sistemas\Sistemes1\Sistemes1\main.cpp;C:\Users\34648\Desktop\Visual 2 CDI\Practica 1 sistemas\Sistemas\Sistemes1\Sistemes1\x64\Debug\main.obj
-C:\Users\34648\Desktop\Visual 2 CDI\Practica 1 sistemas\Sistemas\Sistemes1\Sistemes1\3Nodes\Node.cpp;C:\Users\34648\Desktop\Visual 2 CDI\Practica 1 sistemas\Sistemas\Sistemes1\Sistemes1\x64\Debug\Node.obj
-C:\Users\34648\Desktop\Visual 2 CDI\Practica 1 sistemas\Sistemas\Sistemes1\Sistemes1\Exemple.cpp;C:\Users\34648\Desktop\Visual 2 CDI\Practica 1 sistemas\Sistemas\Sistemes1\Sistemes1\x64\Debug\Exemple.obj
-C:\Users\34648\Desktop\Visual 2 CDI\Practica 1 sistemas\Sistemas\Sistemes1\Sistemes1\3Nodes\NodeMap.cpp;C:\Users\34648\Desktop\Visual 2 CDI\Practica 1 sistemas\Sistemas\Sistemes1\Sistemes1\x64\Debug\NodeMap.obj
-C:\Users\34648\Desktop\Visual 2 CDI\Practica 1 sistemas\Sistemas\Sistemes1\Sistemes1\Mapa.cpp;C:\Users\34648\Desktop\Visual 2 CDI\Practica 1 sistemas\Sistemas\Sistemes1\Sistemes1\x64\Debug\Mapa.obj
-C:\Users\34648\Desktop\Visual 2 CDI\Practica 1 sistemas\Sistemas\Sistemes1\Sistemes1\Player.cpp;C:\Users\34648\Desktop\Visual 2 CDI\Practica 1 sistemas\Sistemas\Sistemes1\Sistemes1\x64\Debug\Player.obj
-C:\Users\34648\Desktop\Visual 2 CDI\Practica 1 sistemas\Sistemas\Sistemes1\Sistemes1\Utils\ConsoleControl.cpp;C:\Users\34648\Desktop\Visual 2 CDI\Practica 1 sistemas\Sistemas\Sistemes1\Sistemes1\x64\Debug\ConsoleControl.obj
-C:\Users\34648\Desktop\Visual 2 CDI\Practica 1 sistemas\Sistemas\Sistemes1\Sistemes1\3Nodes\Vector2.cpp;C:\Users\34648\Desktop\Visual 2 CDI\Practica 1 sistemas\Sistemas\Sistemes1\Sistemes1\x64\Debug\Vector2.obj
-C:\Users\34648\Desktop\Visual 2 CDI\Practica 1 sistemas\Sistemas\Sistemes1\Sistemes1\World.cpp;C:\Users\34648\Desktop\Visual 2 CDI\Practica 1 sistemas\Sistemas\Sistemes1\Sistemes1\x64\Debug\World.obj
+C:\Users\Aberche\Desktop\2n\1r_Semestre\Sistemes\Sistemas\Sistemes1\Sistemes1\2inputSystem\InputSystem.cpp;C:\Users\Aberche\Desktop\2n\1r_Semestre\Sistemes\Sistemas\Sistemes1\Sistemes1\x64\Debug\InputSystem.obj
+C:\Users\Aberche\Desktop\2n\1r_Semestre\Sistemes\Sistemas\Sistemes1\Sistemes1\3Nodes\INodeContent.cpp;C:\Users\Aberche\Desktop\2n\1r_Semestre\Sistemes\Sistemas\Sistemes1\Sistemes1\x64\Debug\INodeContent.obj
+C:\Users\Aberche\Desktop\2n\1r_Semestre\Sistemes\Sistemas\Sistemes1\Sistemes1\dist\jsoncpp.cpp;C:\Users\Aberche\Desktop\2n\1r_Semestre\Sistemes\Sistemas\Sistemes1\Sistemes1\x64\Debug\jsoncpp.obj
+C:\Users\Aberche\Desktop\2n\1r_Semestre\Sistemes\Sistemas\Sistemes1\Sistemes1\4json\ICodable.cpp;C:\Users\Aberche\Desktop\2n\1r_Semestre\Sistemes\Sistemas\Sistemes1\Sistemes1\x64\Debug\ICodable.obj
+C:\Users\Aberche\Desktop\2n\1r_Semestre\Sistemes\Sistemas\Sistemes1\Sistemes1\Enemy.cpp;C:\Users\Aberche\Desktop\2n\1r_Semestre\Sistemes\Sistemas\Sistemes1\Sistemes1\x64\Debug\Enemy.obj
+C:\Users\Aberche\Desktop\2n\1r_Semestre\Sistemes\Sistemas\Sistemes1\Sistemes1\main.cpp;C:\Users\Aberche\Desktop\2n\1r_Semestre\Sistemes\Sistemas\Sistemes1\Sistemes1\x64\Debug\main.obj
+C:\Users\Aberche\Desktop\2n\1r_Semestre\Sistemes\Sistemas\Sistemes1\Sistemes1\3Nodes\Node.cpp;C:\Users\Aberche\Desktop\2n\1r_Semestre\Sistemes\Sistemas\Sistemes1\Sistemes1\x64\Debug\Node.obj
+C:\Users\Aberche\Desktop\2n\1r_Semestre\Sistemes\Sistemas\Sistemes1\Sistemes1\Exemple.cpp;C:\Users\Aberche\Desktop\2n\1r_Semestre\Sistemes\Sistemas\Sistemes1\Sistemes1\x64\Debug\Exemple.obj
+C:\Users\Aberche\Desktop\2n\1r_Semestre\Sistemes\Sistemas\Sistemes1\Sistemes1\3Nodes\NodeMap.cpp;C:\Users\Aberche\Desktop\2n\1r_Semestre\Sistemes\Sistemas\Sistemes1\Sistemes1\x64\Debug\NodeMap.obj
+C:\Users\Aberche\Desktop\2n\1r_Semestre\Sistemes\Sistemas\Sistemes1\Sistemes1\Mapa.cpp;C:\Users\Aberche\Desktop\2n\1r_Semestre\Sistemes\Sistemas\Sistemes1\Sistemes1\x64\Debug\Mapa.obj
+C:\Users\Aberche\Desktop\2n\1r_Semestre\Sistemes\Sistemas\Sistemes1\Sistemes1\Player.cpp;C:\Users\Aberche\Desktop\2n\1r_Semestre\Sistemes\Sistemas\Sistemes1\Sistemes1\x64\Debug\Player.obj
+C:\Users\Aberche\Desktop\2n\1r_Semestre\Sistemes\Sistemas\Sistemes1\Sistemes1\Utils\ConsoleControl.cpp;C:\Users\Aberche\Desktop\2n\1r_Semestre\Sistemes\Sistemas\Sistemes1\Sistemes1\x64\Debug\ConsoleControl.obj
+C:\Users\Aberche\Desktop\2n\1r_Semestre\Sistemes\Sistemas\Sistemes1\Sistemes1\3Nodes\Vector2.cpp;C:\Users\Aberche\Desktop\2n\1r_Semestre\Sistemes\Sistemas\Sistemes1\Sistemes1\x64\Debug\Vector2.obj
+C:\Users\Aberche\Desktop\2n\1r_Semestre\Sistemes\Sistemas\Sistemes1\Sistemes1\World.cpp;C:\Users\Aberche\Desktop\2n\1r_Semestre\Sistemes\Sistemas\Sistemes1\Sistemes1\x64\Debug\World.obj

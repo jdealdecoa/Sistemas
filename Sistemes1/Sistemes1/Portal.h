@@ -13,7 +13,7 @@ enum class PortalLimits
 
 class Portal : public INodeContent {
 public:
-    Portal() = default;
+    Portal(DisplayType type) : INodeContent(type) {};
     ~Portal() = default;
 
     std::vector<PortalLimits> limits{ PortalLimits::NONE ,PortalLimits::NONE };
@@ -44,11 +44,11 @@ public:
         {
             if (limits[0] == PortalLimits::NONE)
             {
-                node->SetContent(new Portal());
+                node->SetContent(new Portal(DisplayType::PORTAL));
             }
             if (limits[0] != PortalLimits::TOP)
             {
-                node->SetContent(new Portal());
+                node->SetContent(new Portal(DisplayType::PORTAL));
             }
         } 
 
@@ -56,11 +56,11 @@ public:
         {
             if (limits[0] == PortalLimits::NONE)
             {
-                node->SetContent(new Portal());
+                node->SetContent(new Portal(DisplayType::PORTAL));
             }
             if (limits[0] != PortalLimits::BOTOM)
             {
-                node->SetContent(new Portal());
+                node->SetContent(new Portal(DisplayType::PORTAL));
             }
         }
 
@@ -68,11 +68,11 @@ public:
         {
             if (limits[1] == PortalLimits::NONE)
             {
-                node->SetContent(new Portal());
+                node->SetContent(new Portal(DisplayType::PORTAL));
             }
             if (limits[1] != PortalLimits::LEFT)
             {
-                node->SetContent(new Portal());
+                node->SetContent(new Portal(DisplayType::PORTAL));
             }
         } 
 
@@ -80,11 +80,11 @@ public:
         {
             if (limits[1] == PortalLimits::NONE)
             {
-                node->SetContent(new Portal());
+                node->SetContent(new Portal(DisplayType::PORTAL));
             }
             if (limits[1] != PortalLimits::RIGHT)
             {
-                node->SetContent(new Portal());
+                node->SetContent(new Portal(DisplayType::PORTAL));
             }
         }
     }

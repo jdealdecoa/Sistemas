@@ -22,7 +22,7 @@ void Mapa::Initialize(Vector2 size, Vector2 offset, Vector2 worldPos, Vector2 wS
     _nodeMap = new NodeMap(size, offset);
 
     //Inicializar nodos con contenido
-    Portal portalSetter;
+    Portal portalSetter(DisplayType::PORTAL);
     CC::Lock();
     CC::SetPosition(30, 0);
     std::cout << worldPos.X << " : " << worldPos.Y;
@@ -33,12 +33,11 @@ void Mapa::Initialize(Vector2 size, Vector2 offset, Vector2 worldPos, Vector2 wS
             Vector2 position(x, y);
             _nodeMap->SafePickNode(position, [&](Node* node) {
                 if (x == 0 || x == size.X - 1 || y == 0 || y == size.Y - 1) {
-                    
-                    node->SetContent(new Wall());
+                    node->SetContent(new Wall(DisplayType::WALL));
                 }
                 else
                 {
-                    node->SetContent(new Empty());
+                    node->SetContent(new Empty(DisplayType::ENEMY));
                 }
                 portalSetter.SetPortals(node, position, size);
                 });
@@ -58,7 +57,7 @@ void Mapa::Draw(NodeMap* nodeMap) {
                 CC::Lock();
                 CC::SetPosition(position.X + mapOffset.X, position.Y + mapOffset.Y);
 
-                if (node->GetContent() != nullptr) {
+               if (node->GetContent()->nodeDisplay != DisplayType::PLAYER && node->GetContent()->nodeDisplay != DisplayType::ENEMY) {
                     node->GetContent()->Draw(Vector2(0, 0));
                 }
 

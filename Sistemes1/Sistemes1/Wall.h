@@ -4,7 +4,8 @@
 
 class Wall : public INodeContent {
 public:
-    Wall() = default;
+    Wall(DisplayType type) : INodeContent(type) {};
+
     ~Wall() = default;
 
     void Draw(Vector2 offset) override {

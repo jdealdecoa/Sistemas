@@ -14,6 +14,9 @@ enum class DisplayType
 class INodeContent
 {
 public:
+	DisplayType nodeDisplay;
+
+	INodeContent(DisplayType type) : nodeDisplay(type) {};
 
 	std::string GetDisplayType(DisplayType type) 
 	{
@@ -39,6 +42,7 @@ public:
 		default:
 			break;
 		}
+
 	}
 	virtual void Draw(Vector2 offset) = 0;
 };

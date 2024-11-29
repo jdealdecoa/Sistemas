@@ -4,7 +4,9 @@
 
 class Empty : public INodeContent {
 public:
-    Empty() = default;
+
+    Empty(DisplayType type) : INodeContent(type) {};
+
     ~Empty() = default;
 
     void Draw(Vector2 offset) override {

@@ -15,14 +15,12 @@ private:
     std::mutex movementMutex;
     std::mutex runningMutex;
 
-    void MovementLoop(NodeMap& map, Player* player);
+    void MovementLoop(NodeMap* map, Player* player);
 
 public:
-    Enemy(Vector2 startPos, int intervalMs);
-    ~Enemy();
+    Enemy(Vector2 startPos, int intervalMs, DisplayType type);
 
-    void Start(NodeMap& map, Player* player); // Inicia el hilo del enemigo
-    void Stop();                              // Detiene el movimiento
+    void Start(NodeMap* map, Player* player); // Inicia el hilo del enemigo                           // Detiene el movimiento
     Vector2 GetPosition();
     void Attack();
 

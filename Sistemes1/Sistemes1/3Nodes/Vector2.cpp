@@ -36,8 +36,9 @@ Vector2 Vector2::operator-(Vector2 other){
 bool Vector2::operator==(const Vector2& other) const
 {
 	return (X == other.X && Y == other.Y);
-	//if (this->X == other.X && this->Y == other.Y)
-	//	return true;
-	//else
-	//	return false;
+}
+
+bool Vector2::operator!=(const Vector2& other) const
+{
+	return (X != other.X || Y != other.Y);;
 }

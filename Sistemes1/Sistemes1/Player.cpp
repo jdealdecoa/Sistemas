@@ -1,9 +1,6 @@
 #include "Player.h"
 
-Player::Player(Vector2 p) : lives(3), coins(0), healt(100), potionsAmount(3)
-{
-    this->position = p;
-}
+Player::Player(Vector2 p, DisplayType type) : INodeContent(type), lives(3), coins(0), healt(100), potionsAmount(3), position(p) {};
 
 int Player::GetLives()
 {

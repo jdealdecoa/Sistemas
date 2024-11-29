@@ -13,7 +13,7 @@ void World::SetCurrentMap(Vector2 delta)
 
 World::World(Vector2 worldSize, Vector2 mapSize) : currentMapPosition(0, 0) {
 
-    player = new Player(Vector2(mapSize.X / 2, mapSize.Y / 2));
+    player = new Player(Vector2(mapSize.X / 2, mapSize.Y / 2), DisplayType::PLAYER);
 
     // Crear un mapamundi de tamaño `worldSize.X` x `worldSize.Y`
     for (int x = 0; x < worldSize.X; ++x) {
@@ -28,9 +28,7 @@ World::World(Vector2 worldSize, Vector2 mapSize) : currentMapPosition(0, 0) {
 
     SetCurrentMap(Vector2(worldSize.X / 2, worldSize.Y / 2));
 
-    worldMap[worldSize.X / 2][worldSize.Y / 2].GetNodeMap()->SafePickNode(Vector2(mapSize.X / 2, mapSize.Y / 2), [&](Node* node) {
-        node->SetContent(player);
-        });
+    SpawnEnemy();
 }
 
 
@@ -49,4 +47,11 @@ bool World::MoveToMap(Vector2 delta) {
         return true;
     }
     return false;
+}
+
+void World::SpawnEnemy()
+{
+    Enemy* enemy = new Enemy(Vector2(5, 5), 10000, DisplayType::ENEMY);
+    enemy->Start(currentMap.GetNodeMap(), player);
+    enemies.push_back(enemy);
 }
