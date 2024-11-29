@@ -14,6 +14,7 @@ enum class DisplayType
 class INodeContent
 {
 public:
+
 	std::string GetDisplayType(DisplayType type) 
 	{
 		switch (type)

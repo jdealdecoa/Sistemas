@@ -8,15 +8,15 @@
 class World {
 private:
     Player* player;
-    std::vector<std::vector<Mapa>> worldMap; // Matriz de mapas
+    std::vector<std::vector<Mapa>> worldMap; 
     Mapa currentMap;
-    Vector2 currentMapPosition; // Posición actual del mapa en el mapamundi
+    Vector2 currentMapPosition; 
 
 public:
 
     Player* GetPlayer();
     void SetCurrentMap(Vector2 delta);
-    World(Vector2 worldSize, Vector2 mapSize); // Constructor para crear un mapamundi
-    Mapa& GetCurrentMap(); // Devuelve el mapa actual
-    bool MoveToMap(Vector2 delta); // Cambia al mapa adyacente (si existe)
+    World(Vector2 worldSize, Vector2 mapSize); 
+    Mapa& GetCurrentMap(); 
+    bool MoveToMap(Vector2 delta); 
 };

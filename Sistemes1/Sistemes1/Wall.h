@@ -12,4 +12,5 @@ public:
         std::cout << GetDisplayType(DisplayType::WALL);
         CC::SetColor(CC::WHITE, CC::BLACK);
     }
+
 };

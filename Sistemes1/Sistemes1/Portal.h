@@ -94,4 +94,5 @@ public:
         std::cout << GetDisplayType(DisplayType::PORTAL);
         CC::SetColor(CC::WHITE, CC::BLACK);
     }
+
 };
