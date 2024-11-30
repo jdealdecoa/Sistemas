@@ -63,22 +63,6 @@ void Mapa::Draw(NodeMap* nodeMap) {
     }
 }
 
-bool Mapa::IsValidMove(const Vector2& position)
-{
-    if (position.X < 0 || position.X >= _nodeMap->GetSize().X ||
-        position.Y < 0 || position.Y >= _nodeMap->GetSize().Y) {
-        return false; 
-    }
-
-    Node* node = nullptr;
-    _nodeMap->SafePickNode(position, [&](Node* n) { node = n; });
-
-    if (node && node->GetContent() != nullptr) {
-        return dynamic_cast<Wall*>(node->GetContent()) == nullptr;
-    }
-
-    return true;
-}
 
 NodeMap* Mapa::GetNodeMap()
 {
@@ -93,41 +77,33 @@ Vector2 Mapa::GetMapOffset()
 Json::Value Mapa::Code() {
 	Json::Value json;
 
-	// Guardar posición en el mapamundi
 	json["worldPos"]["x"] = worldPos.X;
 	json["worldPos"]["y"] = worldPos.Y;
 
-	// Guardar tamaño del mapamundi
 	json["worldSize"]["x"] = worldSize.X;
 	json["worldSize"]["y"] = worldSize.Y;
 
-	// Guardar offset del mapa
 	json["mapOffset"]["x"] = mapOffset.X;
 	json["mapOffset"]["y"] = mapOffset.Y;
 
-	// Guardar nodos del mapa
 	if (_nodeMap) {
 		json["nodeMap"] = _nodeMap->Code();
 	}
 
-	CodeSubClassType<Mapa>(json); // Guardar tipo de clase para identificación
+	CodeSubClassType<Mapa>(json);
 	return json;
 }
 
 void Mapa::Decode(Json::Value json) {
-	// Restaurar posición en el mapamundi
 	worldPos = Vector2(json["worldPos"]["x"].asInt(), json["worldPos"]["y"].asInt());
 
-	// Restaurar tamaño del mapamundi
 	worldSize = Vector2(json["worldSize"]["x"].asInt(), json["worldSize"]["y"].asInt());
 
-	// Restaurar offset del mapa
 	mapOffset = Vector2(json["mapOffset"]["x"].asInt(), json["mapOffset"]["y"].asInt());
 
-	// Restaurar nodos del mapa
 	if (json.isMember("nodeMap")) {
 		if (!_nodeMap) {
-			_nodeMap = new NodeMap(Vector2(0, 0), Vector2(0, 0)); // Crear un mapa vacío
+			_nodeMap = new NodeMap(Vector2(0, 0), Vector2(0, 0));
 		}
 		_nodeMap->Decode(json["nodeMap"]);
 	}

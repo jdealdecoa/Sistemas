@@ -77,8 +77,6 @@ void Enemy::MovementLoop(Mapa* map, Player* player) {
 
         if (player->position != newPosition)
         {
-            if (map->IsValidMove(newPosition)) {
-
                 CC::Lock();
                 CC::SetPosition(newPosition.X + map->GetMapOffset().X, newPosition.Y + map->GetMapOffset().Y);
                 Draw(Vector2(0, 0));
@@ -92,7 +90,7 @@ void Enemy::MovementLoop(Mapa* map, Player* player) {
                     });
 
                 position = newPosition;
-            }
+        
         }
 
 

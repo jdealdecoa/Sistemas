@@ -17,7 +17,6 @@ public:
 
     void Initialize(Vector2 size, Vector2 offset, Vector2 worldPos, Vector2 wSize);
     void Draw(NodeMap* nodeMap);
-    bool IsValidMove(const Vector2& position);
 
     NodeMap* GetNodeMap();
     Vector2 GetMapOffset();

@@ -138,7 +138,6 @@
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="3Nodes\Node.cpp" />
-    <ClCompile Include="Exemple.cpp" />
     <ClCompile Include="3Nodes\NodeMap.cpp" />
     <ClCompile Include="Mapa.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -148,7 +147,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="2inputSystem\InputSystem.h" />
-    <ClInclude Include="2inputSystem\tutorialThreads.h" />
     <ClInclude Include="3Nodes\Node.h" />
     <ClInclude Include="3Nodes\NodeMap.h" />
     <ClInclude Include="3Nodes\INodeContent.h" />

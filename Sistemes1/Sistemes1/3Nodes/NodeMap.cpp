@@ -85,38 +85,37 @@ void NodeMap::SafeMultiPickNode(std::list<Vector2> positions, SafeMultiPick safe
 Json::Value NodeMap::Code() {
 	Json::Value json;
 
-	// Guardar tamaño del mapa
+
 	json["size"]["x"] = _size.X;
 	json["size"]["y"] = _size.Y;
 
-	// Guardar offset del mapa
+
 	json["offset"]["x"] = _offset.X;
 	json["offset"]["y"] = _offset.Y;
 
-	// Guardar nodos del mapa
+
 	Json::Value nodesJson;
 	for (int x = 0; x < _size.X; ++x) {
 		for (int y = 0; y < _size.Y; ++y) {
 			Node* node = UnSafeGetNode(Vector2(x, y));
 			if (node != nullptr) {
-				nodesJson[x][y] = node->Code(); // Cada nodo se serializa
+				nodesJson[x][y] = node->Code();
 			}
 		}
 	}
 	json["nodes"] = nodesJson;
 
-	CodeSubClassType<NodeMap>(json); // Guardar tipo de clase para identificación
+	CodeSubClassType<NodeMap>(json); 
 	return json;
 }
 
 void NodeMap::Decode(Json::Value json) {
-	// Restaurar tamaño del mapa
+
 	_size = Vector2(json["size"]["x"].asInt(), json["size"]["y"].asInt());
 
-	// Restaurar offset del mapa
 	_offset = Vector2(json["offset"]["x"].asInt(), json["offset"]["y"].asInt());
 
-	// Limpiar nodos existentes (si los hay)
+
 	for (NodeColumn* column : _grid) {
 		for (Node* node : *column) {
 			delete node;
@@ -125,7 +124,7 @@ void NodeMap::Decode(Json::Value json) {
 	}
 	_grid.clear();
 		
-	// Restaurar nodos del mapa
+
 	Json::Value nodesJson = json["nodes"];
 	for (int x = 0; x < _size.X; ++x) {
 		NodeColumn* column = new NodeColumn();

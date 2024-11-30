@@ -101,10 +101,13 @@ public:
 	Json::Value Code() const override{
 		Json::Value json;
 		json["type"] = static_cast<int>(nodeDisplay);   
+        json["directionX"] = static_cast<int>(direction.X);
+        json["directionY"] = static_cast<int>(direction.Y);
 		return json;
     }
 	void Decode(Json::Value json) override{
 		nodeDisplay = static_cast<DisplayType>(json["type"].asInt());
+        direction = Vector2(static_cast<int>(json["directionX"].asInt()), static_cast<int>(json["directionY"].asInt()));
     }
 
 };

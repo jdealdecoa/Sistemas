@@ -9,6 +9,7 @@ enum class DisplayType
 	WALL,
 	PORTAL,
 	CHEST,
+	LOOT,
 	EMPTY
 };
 

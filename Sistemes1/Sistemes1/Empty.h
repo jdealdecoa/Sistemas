@@ -17,7 +17,7 @@ public:
 
 	Json::Value Code() const override{
 		Json::Value json;
-		json["type"] = static_cast<int>(nodeDisplay); // Guardar el tipo de contenido
+		json["type"] = static_cast<int>(nodeDisplay);
 		return json;
     }
 	void Decode(Json::Value json) override{

@@ -2,7 +2,7 @@
 #include "../Wall.h"
 #include "../Empty.h"
 #include "../Portal.h"
-//#include "../Chest.h" 
+
 
 INodeContent* INodeContent::CreateFromJson(Json::Value json) {
 	if (!json.isMember("type")) {

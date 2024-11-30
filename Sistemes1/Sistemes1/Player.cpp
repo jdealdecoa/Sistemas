@@ -63,10 +63,9 @@ Json::Value Player::Code() const {
 	return json;
 }
 void Player::Decode(Json::Value json) {
-	// Restaurar tipo de contenido
+
 	nodeDisplay = static_cast<DisplayType>(json["type"].asInt());
 
-	// Restaurar atributos del jugador
 	position = Vector2(json["position"]["x"].asInt(), json["position"]["y"].asInt());
 	lives = json["lives"].asInt();
 	coins = json["coins"].asInt();

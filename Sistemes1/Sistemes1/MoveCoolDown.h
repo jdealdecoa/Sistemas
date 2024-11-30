@@ -7,9 +7,9 @@
 
 class MoveCooldown {
 private:
-    bool canMove; // Indica si el jugador puede moverse
-    bool running; // Controla si el hilo está activo
-    std::chrono::milliseconds cooldownTime; // Tiempo entre movimientos
+    bool canMove; 
+    bool running; 
+    std::chrono::milliseconds cooldownTime; 
     std::mutex cooldownMutex;
 
     void CooldownLoop() {
@@ -19,10 +19,10 @@ private:
                 cooldownMutex.unlock();
                 break;
             }
-            canMove = true; // Habilitar movimiento
+            canMove = true; 
             cooldownMutex.unlock();
 
-            std::this_thread::sleep_for(cooldownTime); // Esperar cooldown
+            std::this_thread::sleep_for(cooldownTime); 
         }
     }
 
@@ -48,7 +48,7 @@ public:
 
     void Stop() {
         cooldownMutex.lock();
-        running = false; // Detener el hilo
+        running = false;
         cooldownMutex.unlock();
     }
 };
