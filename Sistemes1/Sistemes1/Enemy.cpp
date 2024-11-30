@@ -4,19 +4,15 @@
 #include <thread>
 #include "Portal.h"
 #include "Wall.h"
+#include "MoveCoolDown.h"
 
 Enemy::Enemy(Vector2 startPos, int intervalMs, DisplayType type) :INodeContent(type), position(startPos), moveIntervalMs(intervalMs), running(true), threadRunning(false) {};
 
 
-void Enemy::Start(NodeMap* map, Player* player) {
+void Enemy::Start(Mapa* map, Player* player) {
     runningMutex.lock();
     running = true;
     runningMutex.unlock();
-
-    CC::Lock();
-    CC::SetPosition(position.X, position.Y);
-    Draw(Vector2(0, 0));
-    CC::Unlock();
 
     movementThread = std::thread(&Enemy::MovementLoop, this, std::ref(map), player);
     threadRunning = true; // Marcar el hilo como activo
@@ -29,58 +25,88 @@ Vector2 Enemy::GetPosition() {
     return currentPosition;
 }
 
-void Enemy::MovementLoop(NodeMap* map, Player* player) {
-    //while (true) {
+void Enemy::MovementLoop(Mapa* map, Player* player) {
 
+    while (map == nullptr)
+    {
+
+    }
+    MoveCooldown moveCooldown(moveIntervalMs); // Cooldown de 500 ms
+
+    Vector2 newPosition = Vector2(0,0);
+
+    CC::Lock();
+    CC::SetPosition(position.X + map->GetMapOffset().X, position.Y + map->GetMapOffset().Y);
+    Draw(Vector2(0, 0));
+    CC::Unlock();
+
+
+    //inputSystem.AddListener(K_W, [&]() {
+    //    if (moveCooldown.TryMove()) {
+    //        newPosition.Y -= 1;
+    //    }
+    //    });
+
+    //inputSystem.AddListener(K_S, [&]() {
+    //    if (moveCooldown.TryMove()) {
+    //        newPosition.Y += 1;
+    //    }
+    //    });
+
+    //inputSystem.AddListener(K_A, [&]() {
+    //    if (moveCooldown.TryMove()) {
+    //        newPosition.X -= 1;
+    //    }
+    //    });
+
+    //inputSystem.AddListener(K_D, [&]() {
+    //    if (moveCooldown.TryMove()) {
+    //        newPosition.X += 1;
+    //    }
+    //    });
+
+    //inputSystem.AddListener(K_ESCAPE, [&]() {
     //    runningMutex.lock();
-    //    if (!running) {
-    //        runningMutex.unlock();
-    //        break; // Salir si se detiene el enemigo
-    //    }
+    //    running = false; // Detener el programa
     //    runningMutex.unlock();
+    //    });
 
-    //    std::this_thread::sleep_for(std::chrono::milliseconds(moveIntervalMs));
+    //inputSystem.StartListen();
 
-    //    movementMutex.lock();
-    //    Vector2 direction(0, 0);
+    while (true) {
 
-    //    // Calcular dirección hacia el jugador
-    //    if (player != nullptr) {
-    //        Vector2 playerPos = player->position;
-    //        if (position.X < playerPos.X) direction.X = 1;
-    //        else if (position.X > playerPos.X) direction.X = -1;
+        if (player->position != newPosition)
+        {
+            if (map->IsValidMove(newPosition)) {
 
-    //        if (position.Y < playerPos.Y) direction.Y = 1;
-    //        else if (position.Y > playerPos.Y) direction.Y = -1;
-    //    }
+                CC::Lock();
+                CC::SetPosition(newPosition.X + map->GetMapOffset().X, newPosition.Y + map->GetMapOffset().Y);
+                Draw(Vector2(0, 0));
+                CC::Unlock();
 
-    //    Vector2 nextPosition = position + direction;
-    //    CC::Lock();
-    //    CC::SetPosition(nextPosition.X, nextPosition.Y);
-    //    Draw(Vector2(0, 0));
-    //    CC::Unlock();
+                map->GetNodeMap()->SafePickNode(position, [&](Node* node) {
+                    CC::Lock();
+                    CC::SetPosition(position.X + map->GetMapOffset().X, position.Y + map->GetMapOffset().Y);
+                    node->DrawContent(Vector2(0, 0));
+                    CC::Unlock();
+                    });
 
-    //    Node* targetNode = nullptr;
-    //    map->SafePickNode(nextPosition, [&](Node* node) {
-    //        targetNode = node;
-    //        if (targetNode && targetNode->GetContent()) {
-    //            if (dynamic_cast<Portal*>(targetNode->GetContent()) == nullptr &&
-    //                dynamic_cast<Wall*>(targetNode->GetContent()) == nullptr) {
-    //                position = nextPosition; // Mover al enemigo
-    //            }
-    //        }
-    //        });
-
-    //    // Verificar si el nodo es válido y no es un portal ni una pared
+                position = newPosition;
+            }
+        }
 
 
-    //    // Verificar si atacamos al jugador
-    //    //if (position == player->position) {
-    //    //    Attack();
-    //    //}
+        //world.GetCurrentMap().Draw(world.GetCurrentMap().GetNodeMap());
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        runningMutex.lock();
+        if (!running) {
+            runningMutex.unlock();
+            break; // Salir si se detiene el programa
+        }
+        runningMutex.unlock();
+    }
 
-    //    movementMutex.unlock();
-    //}
+
 }
 
 void Enemy::Attack() {

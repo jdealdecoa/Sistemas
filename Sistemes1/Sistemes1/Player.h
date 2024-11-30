@@ -33,4 +33,5 @@ public:
 		std::cout << GetDisplayType(DisplayType::PLAYER);
 		CC::SetColor(CC::WHITE, CC::BLACK);
 	}
+
 };

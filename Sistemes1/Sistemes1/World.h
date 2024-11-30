@@ -5,6 +5,8 @@
 #include <vector>
 #include "Player.h"
 #include "Enemy.h"
+#include "MoveCoolDown.h"
+#include "2inputSystem/InputSystem.h"
 
 class World {
 private:
@@ -13,6 +15,8 @@ private:
     Mapa currentMap;
     Vector2 currentMapPosition; 
     std::vector<Enemy*> enemies;
+    bool running = true; 
+    std::mutex runningMutex;
 
 public:
 
@@ -22,4 +26,8 @@ public:
     Mapa& GetCurrentMap(); 
     bool MoveToMap(Vector2 delta); 
     void SpawnEnemy();
+
+
+    static void PlayerInputThread(Player* player, World& world, bool& running, std::mutex& runningMutex);
+    
 };

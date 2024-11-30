@@ -23,10 +23,6 @@ void Mapa::Initialize(Vector2 size, Vector2 offset, Vector2 worldPos, Vector2 wS
 
     //Inicializar nodos con contenido
     Portal portalSetter(DisplayType::PORTAL);
-    CC::Lock();
-    CC::SetPosition(30, 0);
-    std::cout << worldPos.X << " : " << worldPos.Y;
-    CC::Unlock();
     portalSetter.CalculateLimits(worldPos, worldSize);
     for (int x = 0; x < size.X; ++x) {
         for (int y = 0; y < size.Y; ++y) {
@@ -65,10 +61,6 @@ void Mapa::Draw(NodeMap* nodeMap) {
                 });
         }
     }
-    CC::Lock();
-    CC::SetPosition(30, 0);
-    std::cout << worldPos.X << " : " << worldPos.Y;
-    CC::Unlock();
 }
 
 bool Mapa::IsValidMove(const Vector2& position)
