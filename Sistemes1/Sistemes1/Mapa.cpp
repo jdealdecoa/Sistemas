@@ -41,7 +41,7 @@ void Mapa::Initialize(Vector2 size, Vector2 offset, Vector2 worldPos, Vector2 wS
         }
     }
 
-    for (int i = 0; i < chestAmount; i++)
+    for (int i = 0; i < 2; i++)
     {
         Vector2 chestPos(rand() % size.X, rand() % size.Y);
         _nodeMap->SafePickNode(chestPos, [&](Node* node) {

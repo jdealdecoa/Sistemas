@@ -45,7 +45,7 @@ void LoadWorld(World& world) {
 }
 
 int main() {
-    World world(Vector2(3, 3), Vector2(20, 10)); // Mapamundi 3x3 con mapas 20x10
+    World world(Vector2(3, 3), Vector2(10, 10)); // Mapamundi 3x3 con mapas 20x10
     LoadWorld(world);
     bool running = true; 
     Mapa currentmap = world.GetCurrentMap();

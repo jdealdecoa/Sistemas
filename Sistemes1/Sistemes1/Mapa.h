@@ -8,7 +8,6 @@
 class Mapa : public ICodable {
 public:
 
-    int chestAmount = 2;
     Vector2 worldPos;
     Vector2 worldSize;
 
