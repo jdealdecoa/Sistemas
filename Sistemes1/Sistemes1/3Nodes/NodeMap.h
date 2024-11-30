@@ -4,9 +4,10 @@
 #include <functional>
 #include <mutex>
 #include <list>
+#include "../4json/ICodable.h"
 
 #include "Node.h"
-class NodeMap
+class NodeMap: public ICodable
 {
 public:
 	//Typedef: serveix per renombrar un tipus
@@ -37,5 +38,9 @@ public:
 	void SafePickNode(Vector2 position, SafePick savePickAction);
 	void SafeMultiPickNode(std::list<Vector2> position, SafeMultiPick safeMultiPickAction );
 	Vector2 GetSize();
+
+
+	Json::Value Code() override;
+	void Decode(Json::Value json) override;
 };
 

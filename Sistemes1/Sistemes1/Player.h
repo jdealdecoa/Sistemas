@@ -15,7 +15,9 @@ private:
 	int lives;
 	int coins;
 	int healt;
+	int maxHealt = 100;
 	int potionsAmount;
+	int healAmount = 20;
 
 public:
 	Vector2 position;
@@ -27,6 +29,9 @@ public:
 	int GetHealth();
 	int GetPotionAmount();
 
+	void addOnePotion();
+
+	void UsePotion();
 
 	void Draw(Vector2 offset) override {
 		CC::SetColor(CC::WHITE, CC::BLACK);
@@ -34,4 +39,6 @@ public:
 		CC::SetColor(CC::WHITE, CC::BLACK);
 	}
 
+	Json::Value Code() const override;
+	void Decode(Json::Value json) override;
 };

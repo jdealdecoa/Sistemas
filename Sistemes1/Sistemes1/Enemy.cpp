@@ -14,7 +14,7 @@ void Enemy::Start(Mapa* map, Player* player) {
     running = true;
     runningMutex.unlock();
 
-    movementThread = std::thread(&Enemy::MovementLoop, this, std::ref(map), player);
+    //movementThread = std::thread(&Enemy::MovementLoop, this, std::ref(map), player);
     threadRunning = true; // Marcar el hilo como activo
 }
 

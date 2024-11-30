@@ -2,8 +2,10 @@
 #include "3Nodes/NodeMap.h"
 #include <list>
 #include "Player.h"
+#include "4Json/ICodable.h"
 
-class Mapa {
+
+class Mapa : public ICodable {
 public:
 
     Vector2 worldPos;
@@ -19,6 +21,9 @@ public:
 
     NodeMap* GetNodeMap();
     Vector2 GetMapOffset();
+
+	Json::Value Code() override;
+	void Decode(Json::Value json) override;
 
 private:
     NodeMap* _nodeMap;

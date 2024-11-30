@@ -22,7 +22,7 @@ void Mapa::Initialize(Vector2 size, Vector2 offset, Vector2 worldPos, Vector2 wS
     _nodeMap = new NodeMap(size, offset);
 
     //Inicializar nodos con contenido
-    Portal portalSetter(DisplayType::PORTAL);
+    Portal portalSetter(DisplayType::PORTAL, Vector2(0,0));
     portalSetter.CalculateLimits(worldPos, worldSize);
     for (int x = 0; x < size.X; ++x) {
         for (int y = 0; y < size.Y; ++y) {
@@ -33,7 +33,7 @@ void Mapa::Initialize(Vector2 size, Vector2 offset, Vector2 worldPos, Vector2 wS
                 }
                 else
                 {
-                    node->SetContent(new Empty(DisplayType::ENEMY));
+                    node->SetContent(new Empty(DisplayType::EMPTY));
                 }
                 portalSetter.SetPortals(node, position, size);
                 });
@@ -88,4 +88,47 @@ NodeMap* Mapa::GetNodeMap()
 Vector2 Mapa::GetMapOffset()
 {
     return mapOffset;
+}
+
+Json::Value Mapa::Code() {
+	Json::Value json;
+
+	// Guardar posición en el mapamundi
+	json["worldPos"]["x"] = worldPos.X;
+	json["worldPos"]["y"] = worldPos.Y;
+
+	// Guardar tamaño del mapamundi
+	json["worldSize"]["x"] = worldSize.X;
+	json["worldSize"]["y"] = worldSize.Y;
+
+	// Guardar offset del mapa
+	json["mapOffset"]["x"] = mapOffset.X;
+	json["mapOffset"]["y"] = mapOffset.Y;
+
+	// Guardar nodos del mapa
+	if (_nodeMap) {
+		json["nodeMap"] = _nodeMap->Code();
+	}
+
+	CodeSubClassType<Mapa>(json); // Guardar tipo de clase para identificación
+	return json;
+}
+
+void Mapa::Decode(Json::Value json) {
+	// Restaurar posición en el mapamundi
+	worldPos = Vector2(json["worldPos"]["x"].asInt(), json["worldPos"]["y"].asInt());
+
+	// Restaurar tamaño del mapamundi
+	worldSize = Vector2(json["worldSize"]["x"].asInt(), json["worldSize"]["y"].asInt());
+
+	// Restaurar offset del mapa
+	mapOffset = Vector2(json["mapOffset"]["x"].asInt(), json["mapOffset"]["y"].asInt());
+
+	// Restaurar nodos del mapa
+	if (json.isMember("nodeMap")) {
+		if (!_nodeMap) {
+			_nodeMap = new NodeMap(Vector2(0, 0), Vector2(0, 0)); // Crear un mapa vacío
+		}
+		_nodeMap->Decode(json["nodeMap"]);
+	}
 }

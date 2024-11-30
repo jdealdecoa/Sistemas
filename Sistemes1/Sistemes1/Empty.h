@@ -15,4 +15,12 @@ public:
         CC::SetColor(CC::WHITE, CC::BLACK);
     }
 
+	Json::Value Code() const override{
+		Json::Value json;
+		json["type"] = static_cast<int>(nodeDisplay); // Guardar el tipo de contenido
+		return json;
+    }
+	void Decode(Json::Value json) override{
+		nodeDisplay = static_cast<DisplayType>(json["type"].asInt());
+    }
 };

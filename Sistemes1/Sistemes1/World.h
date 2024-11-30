@@ -7,8 +7,9 @@
 #include "Enemy.h"
 #include "MoveCoolDown.h"
 #include "2inputSystem/InputSystem.h"
+#include "4Json/ICodable.h"
 
-class World {
+class World : public ICodable {
 private:
     Player* player;
     std::vector<std::vector<Mapa>> worldMap; 
@@ -20,14 +21,21 @@ private:
 
 public:
 
+    
+
     Player* GetPlayer();
     void SetCurrentMap(Vector2 delta);
     World(Vector2 worldSize, Vector2 mapSize); 
     Mapa& GetCurrentMap(); 
-    bool MoveToMap(Vector2 delta); 
+
     void SpawnEnemy();
 
 
     static void PlayerInputThread(Player* player, World& world, bool& running, std::mutex& runningMutex);
+    void ActAcordinglyToNodeContent(Vector2& newPos);
+
+
+	Json::Value Code() override;
+	void Decode(Json::Value json) override;
     
 };

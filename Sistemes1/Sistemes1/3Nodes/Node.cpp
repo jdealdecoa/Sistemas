@@ -38,3 +38,36 @@ Vector2 Node::GetPosition()
 INodeContent* Node::GetContent() {
 	return _content;
 }
+
+Json::Value Node::Code() {
+	Json::Value json;
+
+	// Serializar posición
+	json["position"]["x"] = _position.X;
+	json["position"]["y"] = _position.Y;
+
+	// Serializar contenido
+	if (_content != nullptr) {
+		json["content"] = _content->Code();
+	}
+	else {
+		json["content"] = Json::nullValue; // Contenido vacío
+	}
+
+	return json;
+}
+
+void Node::Decode(Json::Value json) {
+	// Restaurar posición
+	_position = Vector2(json["position"]["x"].asInt(), json["position"]["y"].asInt());
+
+	// Restaurar contenido
+	if (!json["content"].isNull()) {
+		if (_content != nullptr) {
+			delete _content; // Eliminar contenido anterior
+		}
+
+		// Crear instancia del contenido según el tipo
+		_content = INodeContent::CreateFromJson(json["content"]);
+	}
+}

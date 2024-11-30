@@ -2,6 +2,7 @@
 #include "3Nodes/INodeContent.h"
 #include "Utils/ConsoleControl.h"
 #include <vector>
+#include "3Nodes/Node.h"
 enum class PortalLimits
 {
     TOP,
@@ -13,8 +14,10 @@ enum class PortalLimits
 
 class Portal : public INodeContent {
 public:
-    Portal(DisplayType type) : INodeContent(type) {};
+    Portal(DisplayType type, Vector2 direction) : INodeContent(type), direction(direction){};
     ~Portal() = default;
+
+    Vector2 direction;
 
     std::vector<PortalLimits> limits{ PortalLimits::NONE ,PortalLimits::NONE };
 
@@ -44,11 +47,11 @@ public:
         {
             if (limits[0] == PortalLimits::NONE)
             {
-                node->SetContent(new Portal(DisplayType::PORTAL));
+                node->SetContent(new Portal(DisplayType::PORTAL, Vector2(0, -1)));
             }
             if (limits[0] != PortalLimits::TOP)
             {
-                node->SetContent(new Portal(DisplayType::PORTAL));
+                node->SetContent(new Portal(DisplayType::PORTAL, Vector2(0, -1)));
             }
         } 
 
@@ -56,11 +59,11 @@ public:
         {
             if (limits[0] == PortalLimits::NONE)
             {
-                node->SetContent(new Portal(DisplayType::PORTAL));
+                node->SetContent(new Portal(DisplayType::PORTAL, Vector2(0, 1)));
             }
             if (limits[0] != PortalLimits::BOTOM)
             {
-                node->SetContent(new Portal(DisplayType::PORTAL));
+                node->SetContent(new Portal(DisplayType::PORTAL, Vector2(0, 1)));
             }
         }
 
@@ -68,11 +71,11 @@ public:
         {
             if (limits[1] == PortalLimits::NONE)
             {
-                node->SetContent(new Portal(DisplayType::PORTAL));
+                node->SetContent(new Portal(DisplayType::PORTAL, Vector2(-1, 0)));
             }
             if (limits[1] != PortalLimits::LEFT)
             {
-                node->SetContent(new Portal(DisplayType::PORTAL));
+                node->SetContent(new Portal(DisplayType::PORTAL, Vector2(-1, 0)));
             }
         } 
 
@@ -80,11 +83,11 @@ public:
         {
             if (limits[1] == PortalLimits::NONE)
             {
-                node->SetContent(new Portal(DisplayType::PORTAL));
+                node->SetContent(new Portal(DisplayType::PORTAL, Vector2(1, 0)));
             }
             if (limits[1] != PortalLimits::RIGHT)
             {
-                node->SetContent(new Portal(DisplayType::PORTAL));
+                node->SetContent(new Portal(DisplayType::PORTAL, Vector2(1, 0)));
             }
         }
     }
@@ -93,6 +96,15 @@ public:
         CC::SetColor(CC::CYAN, CC::BLACK); 
         std::cout << GetDisplayType(DisplayType::PORTAL);
         CC::SetColor(CC::WHITE, CC::BLACK);
+    }
+
+	Json::Value Code() const override{
+		Json::Value json;
+		json["type"] = static_cast<int>(nodeDisplay);   
+		return json;
+    }
+	void Decode(Json::Value json) override{
+		nodeDisplay = static_cast<DisplayType>(json["type"].asInt());
     }
 
 };

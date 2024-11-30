@@ -1,5 +1,6 @@
 #include "World.h"
 #include <iostream>
+#include "Portal.h"
 
 Player* World::GetPlayer()
 {
@@ -29,7 +30,7 @@ World::World(Vector2 worldSize, Vector2 mapSize) : currentMapPosition(0, 0) {
     SetCurrentMap(Vector2(worldSize.X / 2, worldSize.Y / 2));
 
 
-    SpawnEnemy();
+    //SpawnEnemy();
 }
 
 
@@ -37,24 +38,11 @@ Mapa& World::GetCurrentMap() {
     return currentMap;
 }
 
-bool World::MoveToMap(Vector2 delta) {
-    Vector2 newMapPosition = currentMapPosition + delta;
-
-    // Verificar si el nuevo mapa está dentro de los límites
-    if (newMapPosition.X >= 0 && newMapPosition.X < worldMap.size() &&
-        newMapPosition.Y >= 0 && newMapPosition.Y < worldMap[0].size()) {
-        currentMapPosition = newMapPosition;
-
-        return true;
-    }
-    return false;
-}
-
 void World::SpawnEnemy()
 {
-    Enemy* enemy = new Enemy(Vector2(40, 40), 10000, DisplayType::ENEMY);
-    enemy->Start(&worldMap[1][1], player);
-    enemies.push_back(enemy);
+    //Enemy* enemy = new Enemy(Vector2(40, 40), 10000, DisplayType::ENEMY);
+    //enemy->Start(&worldMap[1][1], player);
+    //enemies.push_back(enemy);
 }
 
 void World::PlayerInputThread(Player* player, World& world, bool& running, std::mutex& runningMutex)
@@ -72,48 +60,24 @@ void World::PlayerInputThread(Player* player, World& world, bool& running, std::
     inputSystem.AddListener(K_W, [&]() {
         if (moveCooldown.TryMove()) {
             newPosition.Y -= 1;
-            if (newPosition.Y < 0) {
-                if (world.MoveToMap(Vector2(0, -1))) {
-                    newPosition.Y = world.GetCurrentMap().GetNodeMap()->GetSize().Y - 1;
-                    world.SetCurrentMap(Vector2(world.GetCurrentMap().worldPos.X, world.GetCurrentMap().worldPos.Y - 1));
-                }
-            }
         }
         });
 
     inputSystem.AddListener(K_S, [&]() {
         if (moveCooldown.TryMove()) {
             newPosition.Y += 1;
-            if (newPosition.Y >= world.GetCurrentMap().GetNodeMap()->GetSize().Y) {
-                if (world.MoveToMap(Vector2(0, 1))) {
-                    newPosition.Y = 0;
-                    world.SetCurrentMap(Vector2(world.GetCurrentMap().worldPos.X, world.GetCurrentMap().worldPos.Y + 1));
-                }
-            }
         }
         });
 
     inputSystem.AddListener(K_A, [&]() {
         if (moveCooldown.TryMove()) {
             newPosition.X -= 1;
-            if (newPosition.X < 0) {
-                if (world.MoveToMap(Vector2(-1, 0))) {
-                    newPosition.X = world.GetCurrentMap().GetNodeMap()->GetSize().X - 1;
-                    world.SetCurrentMap(Vector2(world.GetCurrentMap().worldPos.X - 1, world.GetCurrentMap().worldPos.Y));
-                }
-            }
         }
         });
 
     inputSystem.AddListener(K_D, [&]() {
         if (moveCooldown.TryMove()) {
             newPosition.X += 1;
-            if (newPosition.X >= world.GetCurrentMap().GetNodeMap()->GetSize().X) {
-                if (world.MoveToMap(Vector2(1, 0))) {
-                    newPosition.X = 0;
-                    world.SetCurrentMap(Vector2(world.GetCurrentMap().worldPos.X + 1, world.GetCurrentMap().worldPos.Y));
-                }
-            }
         }
         });
 
@@ -121,6 +85,10 @@ void World::PlayerInputThread(Player* player, World& world, bool& running, std::
         runningMutex.lock();
         running = false; // Detener el programa
         runningMutex.unlock();
+        });
+
+    inputSystem.AddListener(K_1, [&]() {
+        player->UsePotion();
         });
 
     inputSystem.StartListen();
@@ -131,19 +99,7 @@ void World::PlayerInputThread(Player* player, World& world, bool& running, std::
         {
             if (world.GetCurrentMap().IsValidMove(newPosition)) {
 
-                CC::Lock();
-                CC::SetPosition(newPosition.X + world.GetCurrentMap().GetMapOffset().X, newPosition.Y + world.GetCurrentMap().GetMapOffset().Y);
-                player->Draw(Vector2(0, 0));
-                CC::Unlock();
-
-                world.GetCurrentMap().GetNodeMap()->SafePickNode(player->position, [&](Node* node) {
-                    CC::Lock();
-                    CC::SetPosition(player->position.X + world.GetCurrentMap().GetMapOffset().X, player->position.Y + world.GetCurrentMap().GetMapOffset().Y);
-                    node->DrawContent(Vector2(0, 0));
-                    CC::Unlock();
-                    });
-
-                player->position = newPosition;
+                world.ActAcordinglyToNodeContent(newPosition);
             }
         }
 
@@ -161,3 +117,123 @@ void World::PlayerInputThread(Player* player, World& world, bool& running, std::
     inputSystem.StopListen();
 }
 
+void World::ActAcordinglyToNodeContent(Vector2& newPos)
+{
+    GetCurrentMap().GetNodeMap()->SafePickNode(newPos, [&](Node* node) {
+        if (node->GetContent()->nodeDisplay == DisplayType::EMPTY)
+        {
+            CC::Lock();
+            CC::SetPosition(newPos.X + GetCurrentMap().GetMapOffset().X, newPos.Y + GetCurrentMap().GetMapOffset().Y);
+            player->Draw(Vector2(0, 0));
+            CC::Unlock();
+
+            GetCurrentMap().GetNodeMap()->SafePickNode(player->position, [&](Node* node) {
+                CC::Lock();
+                CC::SetPosition(player->position.X + GetCurrentMap().GetMapOffset().X, player->position.Y + GetCurrentMap().GetMapOffset().Y);
+                node->DrawContent(Vector2(0, 0));
+                CC::Unlock();
+                });
+
+            player->position = newPos;
+        }
+        else if (node->GetContent()->nodeDisplay == DisplayType::WALL)
+        {
+            newPos = player->position;
+        }
+        else if (node->GetContent()->nodeDisplay == DisplayType::PORTAL) {
+            Portal* portal = dynamic_cast<Portal*>(node->GetContent());
+            if (portal) {
+                Vector2 portalDirection = portal->direction;
+                if (portalDirection == Vector2(0, -1))
+                {
+                    newPos.Y = GetCurrentMap().GetNodeMap()->GetSize().Y - 1;
+                    SetCurrentMap(Vector2(GetCurrentMap().worldPos.X, GetCurrentMap().worldPos.Y - 1));
+                }
+                else if (portalDirection == Vector2(0, 1)) 
+                {
+                    newPos.Y = 0;
+                    SetCurrentMap(Vector2(GetCurrentMap().worldPos.X, GetCurrentMap().worldPos.Y + 1));
+                }
+                else if (portalDirection == Vector2(-1, 0))
+                {
+                    newPos.X = GetCurrentMap().GetNodeMap()->GetSize().X - 1;
+                    SetCurrentMap(Vector2(GetCurrentMap().worldPos.X - 1, GetCurrentMap().worldPos.Y));
+                }
+                else if (portalDirection == Vector2(1, 0))
+                {
+                    newPos.X = 0;
+                    SetCurrentMap(Vector2(GetCurrentMap().worldPos.X + 1, GetCurrentMap().worldPos.Y));
+                }
+            }
+        }
+        });
+
+}
+
+Json::Value World::Code() {
+	Json::Value json;
+
+	// Guardar la posición del mapa actual
+	json["currentMapPosition"]["x"] = currentMapPosition.X;
+	json["currentMapPosition"]["y"] = currentMapPosition.Y;
+
+	// Guardar el jugador
+	if (player) {
+		json["player"] = player->Code();
+	}
+
+	// Guardar todos los mapas del mundo
+	Json::Value worldMapJson;
+	for (int x = 0; x < worldMap.size(); ++x) {
+		for (int y = 0; y < worldMap[x].size(); ++y) {
+			worldMapJson[x][y] = worldMap[x][y].Code();
+		}
+	}
+	json["worldMap"] = worldMapJson;
+
+	// Guardar el mapa actual
+	json["currentMap"] = currentMap.Code();
+
+	// Guardar enemigos
+	//Json::Value enemiesJson;
+	//for (Enemy* enemy : enemies) {
+	//	if (enemy) {
+	//		enemiesJson.append(enemy.Code());
+	//	}
+	//}
+	//json["enemies"] = enemiesJson;
+
+	CodeSubClassType<World>(json); // Guardar tipo de clase
+	return json;
+}
+
+void World::Decode(Json::Value json) {
+	// Restaurar posición del mapa actual
+	currentMapPosition = Vector2(json["currentMapPosition"]["x"].asInt(), json["currentMapPosition"]["y"].asInt());
+
+	// Restaurar jugador
+	if (!player) {
+		player = new Player(Vector2(0, 0), DisplayType::PLAYER);
+	}
+	player->Decode(json["player"]);
+
+	// Restaurar todos los mapas del mundo
+	Json::Value worldMapJson = json["worldMap"];
+	for (int x = 0; x < worldMap.size(); ++x) {
+		for (int y = 0; y < worldMap[x].size(); ++y) {
+			worldMap[x][y].Decode(worldMapJson[x][y]);
+		}
+	}
+
+	// Restaurar mapa actual
+	currentMap.Decode(json["currentMap"]);
+
+	// Restaurar enemigos
+	//enemies.clear();
+	//Json::Value enemiesJson = json["enemies"];
+	//for (const auto& enemyJson : enemiesJson) {
+	//	Enemy* enemy = new Enemy(Vector2(0, 0), 10000, DisplayType::ENEMY);
+	//	enemy->Decode(enemyJson);
+	//	enemies.push_back(enemy);
+	//}
+}

@@ -4,6 +4,32 @@
 #include "3Nodes/Node.h"
 #include "World.h"
 
+void SaveWorld(World& world) {
+	Json::Value saveData = world.Code();
+
+	std::ofstream file("savegame.json");
+	file << saveData;
+	file.close();
+	std::cout << "Game saved successfully!" << std::endl;
+
+}
+
+void AutoSave(World& world, int intervalSeconds, bool& running) {
+	while (running) {
+		std::this_thread::sleep_for(std::chrono::seconds(intervalSeconds));
+		SaveWorld(world);
+	}
+}
+
+void LoadWorld(World& world) {
+	std::ifstream file("savegame.json");
+	Json::Value saveData;
+	file >> saveData;
+	file.close();
+
+	world.Decode(saveData);
+	std::cout << "Game loaded successfully!" << std::endl;
+}
 
 int main() {
     World world(Vector2(3, 3), Vector2(20, 10)); // Mapamundi 3x3 con mapas 20x10
@@ -13,6 +39,8 @@ int main() {
     std::mutex runningMutex; // Mutex para sincronizar el acceso a `running`
 
     std::thread inputThread(World::PlayerInputThread, world.GetPlayer(), std::ref(world), std::ref(running), std::ref(runningMutex));
+	std::thread saveThread(AutoSave, std::ref(world), 10, std::ref(running));
+
 
     while (true) {
         CC::Lock();
@@ -42,6 +70,7 @@ int main() {
     }
 
     inputThread.join();
+	saveThread.join();
 	
 	while (running) {
         

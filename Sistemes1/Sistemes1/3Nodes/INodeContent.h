@@ -1,7 +1,8 @@
 #pragma once
 #include "Vector2.h"
 #include <iostream>
-enum class DisplayType 
+#include "../4json/ICodable.h"
+enum class DisplayType
 {
 	PLAYER,
 	ENEMY,
@@ -45,5 +46,10 @@ public:
 
 	}
 	virtual void Draw(Vector2 offset) = 0;
+
+	virtual Json::Value Code() const = 0;
+	virtual void Decode(Json::Value json) = 0;
+
+	static INodeContent* CreateFromJson(Json::Value json);
 };
 

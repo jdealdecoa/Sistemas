@@ -2,7 +2,8 @@
 #include "Vector2.h"
 #include "INodeContent.h"
 #include <mutex>
-class Node
+#include "../4json/ICodable.h"
+class Node : public ICodable
 {
 private:
 	Vector2 _position; 
@@ -31,5 +32,8 @@ public:
 	// 2. void CheckContent() 
 	void Lock();
 	void Unlock();
+
+	Json::Value Code();
+	void Decode(Json::Value json);
 };
 
