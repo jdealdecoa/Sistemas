@@ -27,6 +27,11 @@ void Player::addOnePotion()
     potionsAmount++;
 }
 
+void Player::add100Coins()
+{
+	coins += 100;
+}
+
 void Player::UsePotion()
 {
     if (potionsAmount > 0) 

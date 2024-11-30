@@ -1,13 +1,4 @@
-﻿  INodeContent.cpp
+﻿  World.cpp
 C:\Users\Aberche\Desktop\2n\1r_Semestre\Sistemes\Sistemas\Sistemes1\Sistemes1\Utils\ConsoleControl.h(43,2): warning C4091: 'static ': se ha omitido a la izquierda de 'ConsoleControl' cuando no hay ninguna variable declarada
-  Enemy.cpp
-C:\Users\Aberche\Desktop\2n\1r_Semestre\Sistemes\Sistemas\Sistemes1\Sistemes1\Utils\ConsoleControl.h(43,2): warning C4091: 'static ': se ha omitido a la izquierda de 'ConsoleControl' cuando no hay ninguna variable declarada
-  Mapa.cpp
-C:\Users\Aberche\Desktop\2n\1r_Semestre\Sistemes\Sistemas\Sistemes1\Sistemes1\Utils\ConsoleControl.h(43,2): warning C4091: 'static ': se ha omitido a la izquierda de 'ConsoleControl' cuando no hay ninguna variable declarada
-  World.cpp
-C:\Users\Aberche\Desktop\2n\1r_Semestre\Sistemes\Sistemas\Sistemes1\Sistemes1\Utils\ConsoleControl.h(43,2): warning C4091: 'static ': se ha omitido a la izquierda de 'ConsoleControl' cuando no hay ninguna variable declarada
-  Generando código...
-C:\Users\Aberche\Desktop\2n\1r_Semestre\Sistemes\Sistemas\Sistemes1\Sistemes1\3Nodes\INodeContent.h(47): warning C4715: 'INodeContent::GetDisplayType': no todas las rutas de acceso de control devuelven un valor
-C:\Users\Aberche\Desktop\2n\1r_Semestre\Sistemes\Sistemas\Sistemes1\Sistemes1\3Nodes\INodeContent.h(47): warning C4715: 'INodeContent::GetDisplayType': no todas las rutas de acceso de control devuelven un valor
-C:\Users\Aberche\Desktop\2n\1r_Semestre\Sistemes\Sistemas\Sistemes1\Sistemes1\3Nodes\INodeContent.h(47): warning C4715: 'INodeContent::GetDisplayType': no todas las rutas de acceso de control devuelven un valor
+C:\Users\Aberche\Desktop\2n\1r_Semestre\Sistemes\Sistemas\Sistemes1\Sistemes1\3Nodes\INodeContent.h(50): warning C4715: 'INodeContent::GetDisplayType': no todas las rutas de acceso de control devuelven un valor
   Sistemes1.vcxproj -> C:\Users\Aberche\Desktop\2n\1r_Semestre\Sistemes\Sistemas\Sistemes1\x64\Debug\Sistemes1.exe

@@ -6,7 +6,6 @@
 enum Weapons {
 	SWORD,
 	LANCE
-
 };
 
 class Player : public INodeContent
@@ -30,6 +29,7 @@ public:
 	int GetPotionAmount();
 
 	void addOnePotion();
+	void add100Coins();
 
 	void UsePotion();
 

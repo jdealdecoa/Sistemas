@@ -38,6 +38,8 @@ public:
 			break;
 		case DisplayType::CHEST:
 			return "C";
+		case DisplayType::LOOT:
+			return "L";
 		case DisplayType::EMPTY:
 			return " ";
 			break;

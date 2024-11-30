@@ -1,7 +1,7 @@
 #include "World.h"
 #include <iostream>
 #include "Portal.h"
-
+#include "Chest.h"
 Player* World::GetPlayer()
 {
     return player;
@@ -82,12 +82,6 @@ void World::PlayerInputThread(Player* player, World& world, bool& running, std::
             newPosition = player->position;
             newPosition.X += 1;
         }
-        });
-
-    inputSystem.AddListener(K_ESCAPE, [&]() {
-        runningMutex.lock();
-        running = false; // Detener el programa
-        runningMutex.unlock();
         });
 
     inputSystem.AddListener(K_1, [&]() {
@@ -171,6 +165,28 @@ void World::ActAcordinglyToNodeContent(Vector2& newPos)
                 std::this_thread::sleep_for(std::chrono::milliseconds(500));
                 player->position = newPos;
             }
+        }
+        else if (node->GetContent()->nodeDisplay == DisplayType::CHEST) 
+        {
+            Chest* chest = dynamic_cast<Chest*>(node->GetContent());
+            chest->ReciveDamage(node);
+            CC::Lock();
+            CC::SetPosition(newPos.X + GetCurrentMap().GetMapOffset().X, newPos.Y + GetCurrentMap().GetMapOffset().Y);
+            node->DrawContent(Vector2(0, 0));
+            CC::Unlock();
+
+            newPos = player->position;
+        }
+        else if (node->GetContent()->nodeDisplay == DisplayType::LOOT)
+        {
+            Loot* loot = dynamic_cast<Loot*>(node->GetContent());
+            loot->Act(player,node);
+            CC::Lock();
+            CC::SetPosition(player->position.X + GetCurrentMap().GetMapOffset().X, player->position.Y + GetCurrentMap().GetMapOffset().Y);
+            node->DrawContent(Vector2(0, 0));
+            CC::Unlock();
+
+            player->position = newPos;
         }
         });
 

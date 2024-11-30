@@ -7,6 +7,7 @@
 #include "Wall.h"
 #include "Portal.h"
 #include "Empty.h"
+#include "Chest.h"
 
 Mapa::Mapa() : _nodeMap(nullptr) {}
 
@@ -39,6 +40,18 @@ void Mapa::Initialize(Vector2 size, Vector2 offset, Vector2 worldPos, Vector2 wS
                 });
         }
     }
+
+    for (int i = 0; i < chestAmount; i++)
+    {
+        Vector2 chestPos(rand() % size.X, rand() % size.Y);
+        _nodeMap->SafePickNode(chestPos, [&](Node* node) {
+            if (node->GetContent()->nodeDisplay == DisplayType::EMPTY)
+            {
+                node->SetContent(new Chest(DisplayType::CHEST));
+            }
+            });
+    }
+    
 
 }
 

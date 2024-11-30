@@ -150,11 +150,13 @@
     <ClInclude Include="3Nodes\Node.h" />
     <ClInclude Include="3Nodes\NodeMap.h" />
     <ClInclude Include="3Nodes\INodeContent.h" />
+    <ClInclude Include="Chest.h" />
     <ClInclude Include="dist\json\json-forwards.h" />
     <ClInclude Include="dist\json\json.h" />
     <ClInclude Include="4json\ICodable.h" />
     <ClInclude Include="Empty.h" />
     <ClInclude Include="Enemy.h" />
+    <ClInclude Include="Loot.h" />
     <ClInclude Include="Mapa.h" />
     <ClInclude Include="MoveCoolDown.h" />
     <ClInclude Include="Player.h" />
